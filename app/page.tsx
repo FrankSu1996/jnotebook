@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import * as esbuild from "esbuild-wasm";
-import { unpkgPathPlugin } from "@/unpkg-path-plugin";
+import { unpkgPathPlugin } from "@/plugins/unpkg-path-plugin";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -17,7 +17,7 @@ export default function Page() {
       entryPoints: ["index.js"],
       bundle: true,
       write: false,
-      plugins: [unpkgPathPlugin()],
+      plugins: [unpkgPathPlugin(input)],
       define: {
         "process.env.NODE_ENV": '"production"',
         global: "window",
