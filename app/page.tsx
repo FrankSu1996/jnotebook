@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import * as esbuild from "esbuild-wasm";
 import { unpkgPathPlugin } from "@/unpkg-path-plugin";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function Page() {
   const [input, setInput] = useState("");
@@ -39,14 +40,11 @@ export default function Page() {
   }, []);
 
   return (
-    <div>
-      <textarea
+    <div className="w-1/2">
+      <Textarea
         onChange={(e) => setInput(e.target.value)}
-        name=""
-        id=""
-        cols={30}
-        rows={10}
-      ></textarea>
+        color="blue"
+      ></Textarea>
       <div>
         <Button onClick={onClick}>Submit</Button>
       </div>
