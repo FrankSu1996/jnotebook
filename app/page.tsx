@@ -30,7 +30,7 @@ export default function Page() {
   const startService = async () => {
     if (!esbuildInitialized.current) {
       await esbuild.initialize({
-        wasmURL: "/esbuild.wasm",
+        wasmURL: "https://unpkg.com/esbuild-wasm@latest/esbuild.wasm",
       });
       esbuildInitialized.current = true;
     }
