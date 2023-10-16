@@ -79,7 +79,7 @@ export const CodeEditor: React.FC<EditorProps> = ({
         onClick={onFormatClick}
         variant={"ghost"}
         size={"sm"}
-        className="absolute top-1 right-1 z-20 opacity-0 transition-opacity hover:opacity-100"
+        className="absolute top-0 right-0 z-20 opacity-0 transition-opacity hover:opacity-100"
       >
         Format
       </Button>
