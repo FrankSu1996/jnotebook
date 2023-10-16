@@ -22,7 +22,7 @@ export const CodeEditor: React.FC<EditorProps> = ({
   initialValue,
   onChange,
 }) => {
-  const editorRef = useRef<any>();
+  const editorRef = useRef<editor.IStandaloneCodeEditor>();
   const [isCursorInside, setIsCursorInside] = useState(false);
 
   useEffect(() => {
@@ -51,16 +51,22 @@ export const CodeEditor: React.FC<EditorProps> = ({
   }
 
   const onFormatClick = async () => {
-    const unformatted = editorRef.current?.getModel().getValue();
+    const model = editorRef.current?.getModel();
+    if (model) {
+      const unformatted = model.getValue();
+      const selection = editorRef.current?.getSelection();
+      console.log(selection);
 
-    const formatted = await prettier.format(unformatted, {
-      parser: "babel",
-      plugins: [parserBabel, prettierPluginEstree],
-      useTabs: false,
-      semi: true,
-      singleQuote: true,
-    });
-    editorRef.current.setValue(formatted);
+      const formatted = await prettier.format(unformatted!, {
+        parser: "babel",
+        plugins: [parserBabel, prettierPluginEstree],
+        useTabs: false,
+        semi: true,
+        singleQuote: true,
+      });
+      editorRef.current?.setValue(formatted);
+      if (selection) editorRef.current?.setSelection(selection);
+    }
   };
 
   return (
