@@ -72,8 +72,14 @@ export default function Page() {
   return (
     <div>
       <ThemeToggle />
-      <CodeEditor />
+      <CodeEditor
+        initialValue=""
+        onChange={(value, ev) => {
+          if (value) setInput(value);
+        }}
+      />
       <Textarea
+        value={input}
         onChange={(e) => setInput(e.target.value)}
         color="blue"
       ></Textarea>
