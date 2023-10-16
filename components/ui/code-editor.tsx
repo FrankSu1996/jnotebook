@@ -1,3 +1,5 @@
+"use client";
+
 import MonacoEditor from "@monaco-editor/react";
 import { useTheme } from "next-themes";
 import { editor } from "monaco-editor";
@@ -6,7 +8,7 @@ import parserBabel from "prettier/plugins/babel";
 import * as prettierPluginEstree from "prettier/plugins/estree";
 import { Button } from "./button";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface EditorProps {
   initialValue: string;
@@ -21,6 +23,24 @@ export const CodeEditor: React.FC<EditorProps> = ({
   onChange,
 }) => {
   const editorRef = useRef<any>();
+  const [isCursorInside, setIsCursorInside] = useState(false);
+
+  useEffect(() => {
+    function handleKeyPress(event: KeyboardEvent) {
+      if (event.ctrlKey && event.key === "s") {
+        event.preventDefault();
+        onFormatClick();
+      }
+    }
+
+    if (isCursorInside) {
+      window.addEventListener("keydown", handleKeyPress);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [isCursorInside]);
 
   const { theme, systemTheme } = useTheme();
   let appliedTheme;
@@ -44,8 +64,19 @@ export const CodeEditor: React.FC<EditorProps> = ({
   };
 
   return (
-    <div>
-      <Button onClick={onFormatClick}>format</Button>
+    <div
+      className="relative h-full"
+      onMouseEnter={() => setIsCursorInside(true)}
+      onMouseLeave={() => setIsCursorInside(false)}
+    >
+      <Button
+        onClick={onFormatClick}
+        variant={"ghost"}
+        size={"sm"}
+        className="absolute top-1 right-1 z-20 opacity-0 transition-opacity hover:opacity-100"
+      >
+        Format
+      </Button>
       <MonacoEditor
         onMount={(editor: editor.IStandaloneCodeEditor) =>
           (editorRef.current = editor)
