@@ -1,7 +1,19 @@
 import MonacoEditor from "@monaco-editor/react";
 import { useTheme } from "next-themes";
+import { editor } from "monaco-editor";
 
-export const CodeEditor = () => {
+interface EditorProps {
+  initialValue: string;
+  onChange(
+    value: string | undefined,
+    event: editor.IModelContentChangedEvent
+  ): void;
+}
+
+export const CodeEditor: React.FC<EditorProps> = ({
+  initialValue,
+  onChange,
+}) => {
   const { theme, systemTheme } = useTheme();
   let appliedTheme;
   if (theme === "system")
@@ -11,6 +23,8 @@ export const CodeEditor = () => {
   }
   return (
     <MonacoEditor
+      onChange={onChange}
+      value={initialValue}
       height="500px"
       language="javascript"
       theme={appliedTheme}
