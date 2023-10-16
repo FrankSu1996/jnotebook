@@ -7,8 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { fetchPlugin } from "@/plugins/fetch-plugin";
 
 export default function Page() {
+  const iframeRef = useRef<any>();
   const [input, setInput] = useState("");
-  const [code, setCode] = useState("");
 
   const esbuildInitialized = useRef<boolean>(false);
 
@@ -24,8 +24,25 @@ export default function Page() {
         global: "window",
       },
     });
-    setCode(result.outputFiles[0].text);
+    iframeRef.current.contentWindow.postMessage(
+      result.outputFiles[0].text,
+      "*"
+    );
   };
+
+  const html = `
+    <html>
+      <head></head>
+      <body>
+        <div id="root"></div>
+        <script>
+          window.addEventListener('message', (event) => {
+            eval(event.data);
+          }, false);
+        </script>
+      </body>
+    </html>
+  `;
 
   const startService = async () => {
     if (!esbuildInitialized.current) {
@@ -49,7 +66,12 @@ export default function Page() {
       <div>
         <Button onClick={onClick}>Submit</Button>
       </div>
-      <pre>{code}</pre>
+      <iframe
+        srcDoc={html}
+        sandbox="allow-scripts"
+        ref={iframeRef}
+        style={{ border: "1px solid" }}
+      ></iframe>
     </div>
   );
 }
