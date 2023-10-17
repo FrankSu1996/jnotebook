@@ -2,11 +2,14 @@
 
 import MonacoEditor from "@monaco-editor/react";
 import { useTheme } from "next-themes";
-import { editor } from "monaco-editor";
+import { editor, languages } from "monaco-editor";
 import * as prettier from "prettier/standalone";
 import parserBabel from "prettier/plugins/babel";
 import * as prettierPluginEstree from "prettier/plugins/estree";
 import { Button } from "./button";
+import { parse } from "@babel/parser";
+import traverse from "@babel/traverse";
+import MonacoJSXHighlighter from "monaco-jsx-highlighter";
 
 import { useEffect, useRef, useState } from "react";
 
@@ -64,9 +67,32 @@ export const CodeEditor: React.FC<EditorProps> = ({
         semi: true,
         singleQuote: true,
       });
-      editorRef.current?.setValue(formatted);
+      editorRef.current?.setValue(formatted.replace(/\n$/, ""));
       if (selection) editorRef.current?.setSelection(selection);
     }
+  };
+
+  const handleEditorDidMount = (editor: editor.IStandaloneCodeEditor) => {
+    editorRef.current = editor;
+
+    const babelParse = (code) =>
+      parse(code, {
+        sourceType: "module",
+        plugins: ["jsx"],
+        errorRecovery: true,
+      });
+
+    const monacoJSXHighlighter = new MonacoJSXHighlighter(
+      // @ts-ignore
+      window.monaco,
+      babelParse,
+      traverse,
+      editor
+    );
+
+    monacoJSXHighlighter.highlightOnDidChangeModelContent(100);
+    // Activate JSX commenting
+    monacoJSXHighlighter.addJSXCommentCommand();
   };
 
   return (
@@ -84,9 +110,7 @@ export const CodeEditor: React.FC<EditorProps> = ({
         Format
       </Button>
       <MonacoEditor
-        onMount={(editor: editor.IStandaloneCodeEditor) =>
-          (editorRef.current = editor)
-        }
+        onMount={handleEditorDidMount}
         onChange={onChange}
         value={initialValue}
         height="500px"
