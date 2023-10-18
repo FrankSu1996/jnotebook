@@ -25,7 +25,6 @@ const html = `
   `;
 
 export const Preview: React.FC<PreviewProps> = ({ code }) => {
-  console.log("rendered preview");
   const iframeRef = useRef<any>();
 
   if (iframeRef.current) {
