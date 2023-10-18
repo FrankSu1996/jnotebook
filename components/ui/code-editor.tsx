@@ -15,16 +15,10 @@ import { useEffect, useRef, useState } from "react";
 
 interface EditorProps {
   initialValue: string;
-  onChange(
-    value: string | undefined,
-    event: editor.IModelContentChangedEvent
-  ): void;
+  onChange(value: string | undefined, event: editor.IModelContentChangedEvent): void;
 }
 
-export const CodeEditor: React.FC<EditorProps> = ({
-  initialValue,
-  onChange,
-}) => {
+export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor>();
   const [isCursorInside, setIsCursorInside] = useState(false);
 
@@ -47,8 +41,7 @@ export const CodeEditor: React.FC<EditorProps> = ({
 
   const { theme, systemTheme } = useTheme();
   let appliedTheme;
-  if (theme === "system")
-    appliedTheme = systemTheme === "dark" ? "vs-dark" : "light";
+  if (theme === "system") appliedTheme = systemTheme === "dark" ? "vs-dark" : "light";
   else {
     appliedTheme = theme === "dark" ? "vs-dark" : "light";
   }
@@ -87,7 +80,7 @@ export const CodeEditor: React.FC<EditorProps> = ({
       window.monaco,
       babelParse,
       traverse,
-      editor
+      editor,
     );
 
     monacoJSXHighlighter.highlightOnDidChangeModelContent(100);
@@ -96,11 +89,7 @@ export const CodeEditor: React.FC<EditorProps> = ({
   };
 
   return (
-    <div
-      className="relative h-full"
-      onMouseEnter={() => setIsCursorInside(true)}
-      onMouseLeave={() => setIsCursorInside(false)}
-    >
+    <div className="relative h-full w-full" onMouseEnter={() => setIsCursorInside(true)} onMouseLeave={() => setIsCursorInside(false)}>
       <Button
         onClick={onFormatClick}
         variant={"ghost"}
@@ -113,7 +102,7 @@ export const CodeEditor: React.FC<EditorProps> = ({
         onMount={handleEditorDidMount}
         onChange={onChange}
         value={initialValue}
-        height="500px"
+        height="100%"
         language="javascript"
         theme={appliedTheme}
         options={{
