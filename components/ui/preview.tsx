@@ -30,7 +30,9 @@ export const Preview: React.FC<PreviewProps> = ({ code }) => {
 
   if (iframeRef.current) {
     iframeRef.current.srcdoc = html;
-    iframeRef.current.contentWindow.postMessage(code, "*");
+    setTimeout(() => {
+      iframeRef.current.contentWindow.postMessage(code, "*");
+    }, 50);
   }
 
   return (
