@@ -1,6 +1,6 @@
 .react-resizable-handle {
   display: block;
-  background-color: #37414b;
+  background-color: hsl(var(--border));
   background-repeat: no-repeat;
   background-position: 50%;
 }
@@ -19,4 +19,3 @@
   cursor: col-resize;
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==");
 }
- 
