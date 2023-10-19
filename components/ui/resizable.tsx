@@ -12,12 +12,7 @@ interface ResizableProps {
 export const Resizable: React.FC<ResizableProps> = ({ direction, children }) => {
   const [innerHeight, setInnerHeight] = useState(0);
   const [innerWidth, setInnerWidth] = useState(0);
-  const [width, setWidth] = useState(() => {
-    if (typeof window === "undefined") {
-      return 0;
-    }
-    return window.innerWidth * 0.75;
-  });
+  const [width, setWidth] = useState(1000);
 
   let resizableProps: ResizableBoxProps;
 
@@ -25,6 +20,7 @@ export const Resizable: React.FC<ResizableProps> = ({ direction, children }) => 
     setInnerHeight(window.innerHeight);
     setInnerWidth(window.innerWidth);
     setWidth(window.innerWidth * 0.75);
+    console.log(window.innerWidth * 0.75);
   }, []);
 
   useEffect(() => {
