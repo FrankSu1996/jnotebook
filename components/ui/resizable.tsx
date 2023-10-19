@@ -10,11 +10,17 @@ interface ResizableProps {
 }
 
 export const Resizable: React.FC<ResizableProps> = ({ direction, children }) => {
-  const [innerHeight, setInnerHeight] = useState(window.innerHeight);
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth);
-  const [width, setWidth] = useState(window.innerWidth * 0.75);
+  const [innerHeight, setInnerHeight] = useState(0);
+  const [innerWidth, setInnerWidth] = useState(0);
+  const [width, setWidth] = useState(0);
 
   let resizableProps: ResizableBoxProps;
+
+  useEffect(() => {
+    setInnerHeight(window.innerHeight);
+    setInnerWidth(window.innerWidth);
+    setWidth(window.innerWidth * 0.75);
+  }, []);
 
   useEffect(() => {
     let timer: any;
