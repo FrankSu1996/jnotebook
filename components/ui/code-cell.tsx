@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { CodeEditor } from "@/components/ui/code-editor";
 import { Preview } from "@/components/ui/preview";
 import { bundleRawCode } from "@/lib/bundler";
