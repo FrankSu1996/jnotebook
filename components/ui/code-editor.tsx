@@ -89,7 +89,7 @@ export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange }) =>
   };
 
   return (
-    <div className="relative h-full w-full" onMouseEnter={() => setIsCursorInside(true)} onMouseLeave={() => setIsCursorInside(false)}>
+    <div className="relative h-full w-[calc(100%-10px)]" onMouseEnter={() => setIsCursorInside(true)} onMouseLeave={() => setIsCursorInside(false)}>
       <Button
         onClick={onFormatClick}
         variant={"ghost"}

@@ -19,12 +19,14 @@ export const CodeCell = () => {
   return (
     <Resizable direction="vertical">
       <div className="h-full flex flex-row">
-        <CodeEditor
-          initialValue=""
-          onChange={(value, ev) => {
-            if (value) setInput(value);
-          }}
-        />
+        <Resizable direction="horizontal">
+          <CodeEditor
+            initialValue=""
+            onChange={(value, ev) => {
+              if (value) setInput(value);
+            }}
+          />
+        </Resizable>
         <Preview code={code} />
       </div>
     </Resizable>
