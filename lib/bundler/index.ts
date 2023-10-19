@@ -11,17 +11,27 @@ export const bundleRawCode = async (rawCode: string) => {
     });
     initialized = true;
   }
-
-  const result = await esbuild.build({
-    entryPoints: ["index.js"],
-    bundle: true,
-    write: false,
-    plugins: [unpkgPathPlugin(), fetchPlugin(rawCode)],
-    define: {
-      "process.env.NODE_ENV": '"production"',
-      global: "window",
-    },
-  });
-
-  return result.outputFiles[0].text;
+  try {
+    const result = await esbuild.build({
+      entryPoints: ["index.js"],
+      bundle: true,
+      write: false,
+      plugins: [unpkgPathPlugin(), fetchPlugin(rawCode)],
+      define: {
+        "process.env.NODE_ENV": '"production"',
+        global: "window",
+      },
+    });
+    return {
+      code: result.outputFiles[0].text,
+      error: undefined,
+    };
+  } catch (e) {
+    if (e instanceof Error) {
+      return {
+        code: undefined,
+        error: e.message,
+      };
+    }
+  }
 };
