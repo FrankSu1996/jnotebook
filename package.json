@@ -37,7 +37,8 @@
     "react-resizable": "^3.0.5",
     "server-only": "^0.0.1",
     "tailwind-merge": "^1.14.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -14,31 +14,55 @@ export const TextEditor: React.FC = () => {
   const { theme } = useTheme();
 
   useEffect(() => {
-    const listener = (event: MouseEvent) => {
-      if (mdEditorRef.current && event.target && mdEditorRef.current.contains(event.target as Node)) {
+    let startedInsideEditor = false;
+    const clickListener = (event: MouseEvent) => {
+      if (startedInsideEditor) {
+        // Reset the flag for future clicks
+        startedInsideEditor = false;
         return;
       }
-      setEditing(false);
-    };
-    document.addEventListener("click", listener, { capture: true });
 
-    return () => document.removeEventListener("click", listener, { capture: true });
+      if (mdEditorRef.current && event.target && !mdEditorRef.current.contains(event.target as Node)) {
+        setEditing(false);
+      }
+    };
+
+    const mouseDownListener = (event: MouseEvent) => {
+      if (mdEditorRef.current && event.target && mdEditorRef.current.contains(event.target as Node)) {
+        console.log("Clicked started inside");
+        startedInsideEditor = true;
+      } else {
+        startedInsideEditor = false;
+      }
+    };
+
+    const mouseUpListener = (event: MouseEvent) => {
+      if (startedInsideEditor && mdEditorRef.current && event.target && !mdEditorRef.current.contains(event.target as Node)) {
+        console.log("click started inside and mouse up fired ");
+        setEditing(true);
+      }
+    };
+
+    document.addEventListener("click", clickListener, { capture: true });
+    document.addEventListener("mousedown", mouseDownListener);
+    document.addEventListener("mouseup", mouseUpListener);
+
+    return () => {
+      document.removeEventListener("mousedown", mouseDownListener);
+      document.removeEventListener("mouseup", mouseUpListener);
+      document.removeEventListener("click", clickListener, { capture: true });
+    };
   }, []);
 
   const editorToRender = editing ? (
-    <div className="container text-editor" ref={mdEditorRef}>
+    <div className="text-editor" ref={mdEditorRef}>
       <MDEditor value={value} onChange={setValue} />
     </div>
   ) : (
-    <div onClick={() => setEditing(true)} className="container text-editor">
-      <MDEditor.Markdown source={"# Header"} />
+    <div onClick={() => setEditing(true)} className="text-editor">
+      <MDEditor.Markdown source={value} className="p-6" />
     </div>
   );
 
-  return (
-    <div data-color-mode={theme}>
-      {editorToRender}
-      <Button>Redux test</Button>
-    </div>
-  );
+  return <div data-color-mode={theme}>{editorToRender}</div>;
 };
