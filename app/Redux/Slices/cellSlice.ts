@@ -31,6 +31,6 @@ export const cellSlice = createSlice({
   reducers: {},
 });
 
-export const { setLoading } = cellSlice.actions;
+export const {} = cellSlice.actions;
 
 export default cellSlice.reducer;
