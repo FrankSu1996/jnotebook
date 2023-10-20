@@ -3,14 +3,15 @@
 import MDEditor from "@uiw/react-md-editor";
 import { useTheme } from "next-themes";
 import { useState, useEffect, useRef } from "react";
+import "@/components/ui/styles/TextEditor.css";
+import { Button } from "./button";
 
 export const TextEditor: React.FC = () => {
-  const [value, setValue] = useState<string | undefined>("**Hello world!!!**");
+  const [value, setValue] = useState<string | undefined>("# Header");
   const [editing, setEditing] = useState(false);
   const mdEditorRef = useRef<HTMLDivElement | null>(null);
 
   const { theme } = useTheme();
-  console.log(theme);
 
   useEffect(() => {
     const listener = (event: MouseEvent) => {
@@ -25,14 +26,19 @@ export const TextEditor: React.FC = () => {
   }, []);
 
   const editorToRender = editing ? (
-    <div className="container" ref={mdEditorRef}>
+    <div className="container text-editor" ref={mdEditorRef}>
       <MDEditor value={value} onChange={setValue} />
     </div>
   ) : (
-    <div onClick={() => setEditing(true)} className="container">
+    <div onClick={() => setEditing(true)} className="container text-editor">
       <MDEditor.Markdown source={"# Header"} />
     </div>
   );
 
-  return <div data-color-mode={theme}>{editorToRender}</div>;
+  return (
+    <div data-color-mode={theme}>
+      {editorToRender}
+      <Button>Redux test</Button>
+    </div>
+  );
 };
