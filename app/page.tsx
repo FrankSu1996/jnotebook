@@ -3,7 +3,7 @@ import { TextEditor } from "@/components/ui/text-editor";
 
 export default function Page() {
   return (
-    <div>
+    <div >
       <TextEditor />
       {/* <CodeCell /> */}
     </div>
