@@ -58,11 +58,11 @@ export const TextEditor: React.FC<TextEditorProps> = ({ cell }) => {
 
   const editorToRender = editing ? (
     <div className="text-editor" ref={mdEditorRef}>
-      <MDEditor value={cell.content} onChange={(v) => dispatch(updateCell({ id: cell.id, content: v || "" }))} />
+      <MDEditor value={cell.content} onChange={(v) => dispatch(updateCell({ id: cell.id, content: v || "" }))} className="h-32" />
     </div>
   ) : (
     <div onClick={() => setEditing(true)} className="text-editor">
-      <MDEditor.Markdown source={cell.content || "Click to edit"} className="p-6" />
+      <MDEditor.Markdown source={cell.content || "Click to edit"} className="p-6 h-32" />
     </div>
   );
 
