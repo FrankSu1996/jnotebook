@@ -17,16 +17,16 @@ export const CellList: React.FC = () => {
   const renderedCells = cellList?.map((cell) => {
     return (
       <Fragment key={cell.id}>
-        <AddCell nextCellId={cell.id} />
         <CellListItem cell={cell} />
+        <AddCell previousCellId={cell.id} />
       </Fragment>
     );
   });
 
   return (
     <div>
+      <AddCell previousCellId={null} forceVisible={cellList.length === 0} />
       {renderedCells}
-      <AddCell nextCellId={null} forceVisible={cellList.length === 0} />
     </div>
   );
 };

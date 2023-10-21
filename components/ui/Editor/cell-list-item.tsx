@@ -12,22 +12,23 @@ export const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
   if (cell.type === "code") {
     child = (
       <>
-        <div>
-          <ActionBar id={cell.id} />
-        </div>
         <CodeCell cell={cell} />
       </>
     );
   } else {
     child = (
       <>
-        <div>
-          <ActionBar id={cell.id} />
-        </div>
         <TextEditor cell={cell} />
       </>
     );
   }
 
-  return <div className="relative pb-5">{child}</div>;
+  return (
+    <div className="relative pb-5">
+      <div>
+        <ActionBar id={cell.id} />
+        {child}
+      </div>
+    </div>
+  );
 };
