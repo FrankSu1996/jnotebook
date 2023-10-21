@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import { Button } from "../button";
 
 export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
-  console.log("rendered");
   return (
     <nav className={cn("flex items-center space-x-10 lg:space-x-10 p-3", className)} {...props}>
       <div className="flex items-center">
@@ -13,7 +12,7 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
           JSNotebook
         </Link>
       </div>
-      <Link href="/" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+      {/* <Link href="/" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
         Customers
       </Link>
       <Link href="/examples/dashboard" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
@@ -21,7 +20,7 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
       </Link>
       <Link href="/examples/dashboard" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
         Settings
-      </Link>
+      </Link> */}
     </nav>
   );
 }

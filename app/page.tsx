@@ -12,9 +12,7 @@ export default function Page() {
     <div>
       <Button
         onClick={() => {
-          dispatch(insertCellBefore({ id: null, cellType: "text" }));
           dispatch(insertCellBefore({ id: null, cellType: "code" }));
-          dispatch(insertCellBefore({ id: null, cellType: "text" }));
         }}
       >
         Redux test

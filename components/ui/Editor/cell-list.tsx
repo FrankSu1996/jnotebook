@@ -9,9 +9,6 @@ export const CellList: React.FC = () => {
   const order = useSelector(selectOrder);
   const data = useSelector(selectData);
 
-  console.log(order);
-  console.log(data);
-
   const cellList = order?.map((id) => {
     return data[id];
   });

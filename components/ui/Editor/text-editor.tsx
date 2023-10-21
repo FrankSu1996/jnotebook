@@ -33,7 +33,6 @@ export const TextEditor: React.FC<TextEditorProps> = ({ cell }) => {
 
     const mouseDownListener = (event: MouseEvent) => {
       if (mdEditorRef.current && event.target && mdEditorRef.current.contains(event.target as Node)) {
-        console.log("Clicked started inside");
         startedInsideEditor = true;
       } else {
         startedInsideEditor = false;
@@ -42,7 +41,6 @@ export const TextEditor: React.FC<TextEditorProps> = ({ cell }) => {
 
     const mouseUpListener = (event: MouseEvent) => {
       if (startedInsideEditor && mdEditorRef.current && event.target && !mdEditorRef.current.contains(event.target as Node)) {
-        console.log("click started inside and mouse up fired ");
         setEditing(true);
       }
     };
