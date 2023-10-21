@@ -41,6 +41,8 @@ export const cellSlice = createSlice({
     },
     deleteCell: (state, action: { payload: string }) => {
       delete state.data[action.payload];
+      // Remove the item from the order array
+      state.order = state.order.filter((item) => item !== action.payload);
     },
     moveCell: (state, action: { payload: { id: string; direction: Direction } }) => {
       const { direction } = action.payload;
