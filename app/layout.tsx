@@ -4,8 +4,11 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { ReduxProvider } from "./Redux/ReduxProvider";
-import { MainNav } from "@/components/ui/main-nav";
+import { MainNav } from "@/components/ui/Layout/main-nav";
 import { Button } from "@/components/ui/button";
+import { LogIn } from "lucide-react";
+import Link from "next/link";
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +31,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <MainNav />
                   <div className="ml-auto flex items-center">
                     <ThemeToggle />
+                    <Link href={"/login"}>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button variant="outline" size="icon" className="border-none">
+                              <LogIn />
+                              <span className="sr-only">Login</span>
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Login</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </Link>
                   </div>
                 </div>
               </div>

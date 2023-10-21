@@ -6,12 +6,13 @@ import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from "./tooltip";
 
 export function ThemeToggle() {
   const { setTheme } = useTheme();
 
   return (
-    <div className="p-6">
+    <div className="p-3">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon" className="border-none">

@@ -4,13 +4,17 @@ import MDEditor from "@uiw/react-md-editor";
 import { useTheme } from "next-themes";
 import { useState, useEffect, useRef } from "react";
 import "@/components/ui/styles/TextEditor.css";
-import { Button } from "./button";
+import { Cell, updateCell } from "@/app/Redux/Slices/cellSlice";
+import { useDispatch } from "react-redux";
 
-export const TextEditor: React.FC = () => {
-  const [value, setValue] = useState<string | undefined>("# Header");
+interface TextEditorProps {
+  cell: Cell;
+}
+
+export const TextEditor: React.FC<TextEditorProps> = ({ cell }) => {
   const [editing, setEditing] = useState(false);
   const mdEditorRef = useRef<HTMLDivElement | null>(null);
-
+  const dispatch = useDispatch();
   const { theme } = useTheme();
 
   useEffect(() => {
@@ -56,11 +60,11 @@ export const TextEditor: React.FC = () => {
 
   const editorToRender = editing ? (
     <div className="text-editor" ref={mdEditorRef}>
-      <MDEditor value={value} onChange={setValue} />
+      <MDEditor value={cell.content} onChange={(v) => dispatch(updateCell({ id: cell.id, content: v || "" }))} />
     </div>
   ) : (
     <div onClick={() => setEditing(true)} className="text-editor">
-      <MDEditor.Markdown source={value} className="p-6" />
+      <MDEditor.Markdown source={cell.content || "Click to edit"} className="p-6" />
     </div>
   );
 

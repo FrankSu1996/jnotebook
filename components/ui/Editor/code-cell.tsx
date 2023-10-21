@@ -1,30 +1,39 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { CodeEditor } from "@/components/ui/code-editor";
-import { Preview } from "@/components/ui/preview";
+import { CodeEditor } from "@/components/ui/Editor/code-editor";
+import { Preview } from "@/components/ui/Editor/preview";
 import { bundleRawCode } from "@/lib/bundler";
-import { Resizable } from "./resizable";
+import { Resizable } from "../resizable";
 import React from "react";
+import { Cell, updateCell } from "@/app/Redux/Slices/cellSlice";
+import { useDispatch } from "react-redux";
 
 const MemoizedPreview = React.memo(Preview);
 
-export const CodeCell = () => {
-  const [input, setInput] = useState("");
+interface CodeCellProps {
+  cell: Cell;
+}
+
+export const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const [code, setCode] = useState("");
   const [error, setError] = useState<string | undefined>(undefined);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const timer = setTimeout(async () => {
-      const output = await bundleRawCode(input);
-      if (output?.code) setCode(output.code);
+      const output = await bundleRawCode(cell.content);
+      if (output?.code) {
+        setCode(output.code);
+      }
       if (output?.error) setError(output.error);
-    }, 750);
+    }, 1000);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [input]);
+  }, [cell.content]);
 
   return (
     <Resizable direction="vertical">
@@ -33,7 +42,7 @@ export const CodeCell = () => {
           <CodeEditor
             initialValue=""
             onChange={(value, ev) => {
-              if (value) setInput(value);
+              if (value) dispatch(updateCell({ id: cell.id, content: value }));
             }}
           />
         </Resizable>

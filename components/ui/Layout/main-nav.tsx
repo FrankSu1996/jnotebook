@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ScrollText } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "./button";
+import { Button } from "../button";
 
 export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
   console.log("rendered");

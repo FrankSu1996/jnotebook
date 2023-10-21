@@ -3,7 +3,6 @@
 import { useSelector } from "react-redux";
 import { selectOrder, selectData } from "@/app/Redux/Slices/cellSlice";
 import { CellListItem } from "./cell-list-item";
-import { useEffect } from "react";
 
 export const CellList: React.FC = () => {
   const order = useSelector(selectOrder);

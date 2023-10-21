@@ -6,7 +6,7 @@ import { editor, languages } from "monaco-editor";
 import * as prettier from "prettier/standalone";
 import parserBabel from "prettier/plugins/babel";
 import * as prettierPluginEstree from "prettier/plugins/estree";
-import { Button } from "./button";
+import { Button } from "../button";
 import { parse } from "@babel/parser";
 import traverse from "@babel/traverse";
 import MonacoJSXHighlighter from "monaco-jsx-highlighter";
@@ -51,7 +51,6 @@ export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange }) =>
     if (model) {
       const unformatted = model.getValue();
       const selection = editorRef.current?.getSelection();
-      console.log(selection);
 
       const formatted = await prettier.format(unformatted!, {
         parser: "babel",
