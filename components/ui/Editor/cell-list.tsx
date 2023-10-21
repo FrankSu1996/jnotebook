@@ -3,7 +3,8 @@
 import { useSelector } from "react-redux";
 import { selectOrder, selectData } from "@/app/Redux/Slices/cellSlice";
 import { CellListItem } from "./cell-list-item";
-import { useEffect } from "react";
+import { AddCell } from "../add-cell";
+import { Fragment } from "react";
 
 export const CellList: React.FC = () => {
   const order = useSelector(selectOrder);
@@ -14,8 +15,18 @@ export const CellList: React.FC = () => {
   });
 
   const renderedCells = cellList?.map((cell) => {
-    return <CellListItem key={cell.id} cell={cell} />;
+    return (
+      <Fragment key={cell.id}>
+        <AddCell nextCellId={cell.id} />
+        <CellListItem cell={cell} />
+      </Fragment>
+    );
   });
 
-  return <div>{renderedCells}</div>;
+  return (
+    <div>
+      {renderedCells}
+      <AddCell nextCellId={null} forceVisible={cellList.length === 0} />
+    </div>
+  );
 };

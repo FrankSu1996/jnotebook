@@ -11,7 +11,7 @@ export const ActionBar: React.FC<ActionBarProps> = ({ id }) => {
   const dispatch = useDispatch();
 
   return (
-    <div className="absolute top-0 right-0 z-20 group">
+    <div className="absolute bottom-0 left-0 z-20 group">
       <Button
         variant={"outline"}
         size={"sm"}
@@ -29,7 +29,7 @@ export const ActionBar: React.FC<ActionBarProps> = ({ id }) => {
         <ChevronDown />
       </Button>
       <Button
-        variant={"outline"}
+        variant={"destructive"}
         size={"sm"}
         onClick={() => dispatch(deleteCell(id))}
         className="rounded-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"

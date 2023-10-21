@@ -29,5 +29,5 @@ export const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
     );
   }
 
-  return <div className="relative">{child}</div>;
+  return <div className="relative pb-5">{child}</div>;
 };

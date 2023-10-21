@@ -10,13 +10,6 @@ export default function Page() {
 
   return (
     <div>
-      <Button
-        onClick={() => {
-          dispatch(insertCellBefore({ id: null, cellType: "code" }));
-        }}
-      >
-        Redux test
-      </Button>
       <CellList />
     </div>
   );
