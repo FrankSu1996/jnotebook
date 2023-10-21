@@ -1,3 +1,5 @@
+"use client";
+
 import { Cell } from "@/app/Redux/Slices/cellSlice";
 import { CodeCell } from "./code-cell";
 import { TextEditor } from "./text-editor";

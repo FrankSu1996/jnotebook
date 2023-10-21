@@ -2,7 +2,7 @@
 
 import MonacoEditor from "@monaco-editor/react";
 import { useTheme } from "next-themes";
-import { editor, languages } from "monaco-editor";
+import { editor, KeyMod, KeyCode } from "monaco-editor";
 import * as prettier from "prettier/standalone";
 import parserBabel from "prettier/plugins/babel";
 import * as prettierPluginEstree from "prettier/plugins/estree";
@@ -12,21 +12,28 @@ import traverse from "@babel/traverse";
 import MonacoJSXHighlighter from "monaco-jsx-highlighter";
 
 import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { moveCell } from "@/app/Redux/Slices/cellSlice";
 
 interface EditorProps {
+  id: string;
   initialValue: string;
   onChange(value: string | undefined, event: editor.IModelContentChangedEvent): void;
 }
 
-export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange }) => {
+export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor>();
   const [isCursorInside, setIsCursorInside] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     function handleKeyPress(event: KeyboardEvent) {
       if (event.ctrlKey && event.key === "s") {
         event.preventDefault();
         onFormatClick();
+      } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        console.log("Should move cell up");
       }
     }
 
@@ -66,6 +73,22 @@ export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange }) =>
 
   const handleEditorDidMount = (editor: editor.IStandaloneCodeEditor) => {
     editorRef.current = editor;
+    editorRef.current.addAction({
+      id: "move-cell-down",
+      label: "Move Cell Down",
+      keybindings: [KeyMod.CtrlCmd | KeyCode.DownArrow],
+      run: () => {
+        dispatch(moveCell({ id, direction: "down" }));
+      },
+    });
+    editorRef.current.addAction({
+      id: "move-cell-up",
+      label: "Move Cell Up",
+      keybindings: [KeyMod.CtrlCmd | KeyCode.UpArrow],
+      run: () => {
+        dispatch(moveCell({ id, direction: "up" }));
+      },
+    });
 
     const babelParse = (code) =>
       parse(code, {

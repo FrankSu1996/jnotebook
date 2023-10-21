@@ -26,7 +26,7 @@ export const ActionBar: React.FC<ActionBarProps> = ({ id }) => {
             </Button>
           </TooltipTrigger>
           <TooltipContent align="center">
-            <p className="p-3">Move cell up</p>
+            <p className="p-3 pl-10">Move cell up</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

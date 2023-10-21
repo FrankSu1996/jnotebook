@@ -8,12 +8,17 @@ import { Resizable } from "../resizable";
 import React from "react";
 import { Cell, updateCell } from "@/app/Redux/Slices/cellSlice";
 import { useDispatch } from "react-redux";
+import dynamic from "next/dynamic";
 
 const MemoizedPreview = React.memo(Preview);
 
 interface CodeCellProps {
   cell: Cell;
 }
+
+const DynamicCodeEditor = dynamic(() => import("./code-editor").then((mod) => mod.CodeEditor), {
+  ssr: false,
+});
 
 export const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const [code, setCode] = useState("");
@@ -39,7 +44,8 @@ export const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
     <Resizable direction="vertical">
       <div className="h-full flex flex-row">
         <Resizable direction="horizontal">
-          <CodeEditor
+          <DynamicCodeEditor
+            id={cell.id}
             initialValue=""
             onChange={(value, ev) => {
               if (value) dispatch(updateCell({ id: cell.id, content: value }));
