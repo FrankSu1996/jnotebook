@@ -21,16 +21,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <ReduxProvider>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-            <div className="border-b">
-              <div className="flex h-16 items-center px-4 w-full">
-                {/* <TeamSwitcher /> */}
-                <MainNav />
-                <div className="ml-auto flex items-center">
-                  <ThemeToggle />
+            <div className="container">
+              <div className="border-b mb-10">
+                <div className="flex h-16 items-center px-4 w-full">
+                  {/* <TeamSwitcher /> */}
+                  <MainNav />
+                  <div className="ml-auto flex items-center">
+                    <ThemeToggle />
+                  </div>
                 </div>
               </div>
+              {children}
             </div>
-            {children}
           </ThemeProvider>
         </ReduxProvider>
       </body>

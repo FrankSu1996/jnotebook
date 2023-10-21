@@ -5,6 +5,9 @@ import { CodeEditor } from "@/components/ui/code-editor";
 import { Preview } from "@/components/ui/preview";
 import { bundleRawCode } from "@/lib/bundler";
 import { Resizable } from "./resizable";
+import React from "react";
+
+const MemoizedPreview = React.memo(Preview);
 
 export const CodeCell = () => {
   const [input, setInput] = useState("");
@@ -34,7 +37,7 @@ export const CodeCell = () => {
             }}
           />
         </Resizable>
-        <Preview code={code} error={error} />
+        <MemoizedPreview code={code} error={error} />
       </div>
     </Resizable>
   );
