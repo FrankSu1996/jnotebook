@@ -13,7 +13,7 @@ import MonacoJSXHighlighter from "monaco-jsx-highlighter";
 
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { moveCell } from "@/app/Redux/Slices/cellSlice";
+import { deleteCell, moveCell } from "@/app/Redux/Slices/cellSlice";
 
 interface EditorProps {
   id: string;
@@ -31,9 +31,6 @@ export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }
       if (event.ctrlKey && event.key === "s") {
         event.preventDefault();
         onFormatClick();
-      } else if (event.key === "ArrowUp") {
-        event.preventDefault();
-        console.log("Should move cell up");
       }
     }
 
