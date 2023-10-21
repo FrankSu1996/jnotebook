@@ -35,7 +35,7 @@ export const fetchPlugin = (inputCode: string) => {
 
         const dataText = await data.text();
         const escapedText = dataText
-          .replace(/\n/g, "")
+          .replace(/\n/g, "") 
           .replace(/"/g, '\\"')
           .replace(/'/g, "\\'");
 

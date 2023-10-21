@@ -13,8 +13,6 @@ export const CellList: React.FC = () => {
     return data[id];
   });
 
-  console.log(cellList);
-
   const renderedCells = cellList?.map((cell) => {
     return <CellListItem key={cell.id} cell={cell} />;
   });

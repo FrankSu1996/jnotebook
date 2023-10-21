@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { ReduxProvider } from "./Redux/ReduxProvider";
+import { MainNav } from "@/components/ui/main-nav";
+import { Button } from "@/components/ui/button";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +21,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <ReduxProvider>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-            <ThemeToggle />
+            <div className="border-b">
+              <div className="flex h-16 items-center px-4 w-full">
+                {/* <TeamSwitcher /> */}
+                <MainNav />
+                <div className="ml-auto flex items-center">
+                  <ThemeToggle />
+                </div>
+              </div>
+            </div>
             {children}
           </ThemeProvider>
         </ReduxProvider>
