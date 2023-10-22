@@ -1,9 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { CodeEditor } from "@/components/ui/Editor/code-editor";
 import { Preview } from "@/components/ui/Editor/preview";
-import { bundleRawCode } from "@/lib/bundler";
 import { Resizable } from "../resizable";
 import React from "react";
 import { Cell, bundleCodeAction, selectBundle, updateCell, useCumulativeCode } from "@/app/Redux/Slices/cellSlice";
