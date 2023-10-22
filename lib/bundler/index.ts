@@ -21,6 +21,8 @@ export const bundleRawCode = async (rawCode: string) => {
         "process.env.NODE_ENV": '"production"',
         global: "window",
       },
+      jsxFactory: "_rct.createElement",
+      jsxFragment: "_rct.Fragment",
     });
     return {
       code: result.outputFiles[0].text,

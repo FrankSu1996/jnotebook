@@ -42,8 +42,6 @@ export const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const dispatch: AppDispatch = useDispatch();
   const bundle = useSelector(selectBundle(cell.id));
   const cumulativeCode = useCumulativeCode(cell.id);
-  console.log(cumulativeCode);
-
   const bundleRef = useRef<any>();
   bundleRef.current = bundle;
 
