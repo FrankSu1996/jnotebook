@@ -22,12 +22,14 @@ export const bundleRawCode = async (rawCode: string) => {
         global: "window",
       },
     });
+    console.log(result);
     return {
       code: result.outputFiles[0].text,
       error: undefined,
     };
   } catch (e) {
     if (e instanceof Error) {
+      console.log(e);
       return {
         code: undefined,
         error: e.message,
