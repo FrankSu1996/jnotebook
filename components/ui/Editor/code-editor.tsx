@@ -87,6 +87,8 @@ export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }
       },
     });
 
+    editorRef.current.createDecorationsCollection();
+
     const babelParse = (code) =>
       parse(code, {
         sourceType: "module",
@@ -109,9 +111,6 @@ export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }
 
   return (
     <div className="relative h-full w-[calc(100%-10px)]" onMouseEnter={() => setIsCursorInside(true)} onMouseLeave={() => setIsCursorInside(false)}>
-      <Button onClick={onFormatClick} variant={"ghost"} size={"sm"} className="absolute top-0 right-0 opacity-0 transition-opacity hover:opacity-100">
-        Format
-      </Button>
       <MonacoEditor
         onMount={handleEditorDidMount}
         onChange={onChange}

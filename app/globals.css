@@ -81,3 +81,7 @@
 .animate-indeterminate {
   animation: indeterminate 1s infinite;
 }
+
+.react-draggable-transparent-selection .cell-list {
+  margin-bottom: 100vh;
+}

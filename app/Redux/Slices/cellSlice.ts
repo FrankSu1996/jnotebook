@@ -128,28 +128,34 @@ export const useCumulativeCode = (cellId) => {
   return useMemo(() => {
     const orderedCells = order.map((id) => data[id]);
 
-    const cumulativeCode: string[] = [
-      `
-      import _rct from "react";
-      import _rctDOM from "react-dom";
-      const show = (value) => {
-        const root = document.querySelector('#root');
+    const showFunc = `
+    import _rct from "react";
+    import _rctDOM from "react-dom";
+    var show = (value) => {
+      const root = document.querySelector('#root');
 
-        if (typeof value === 'object') {
-          if (value.$$typeof && value.props) {
-            _rctDOM.render(value, root);
-          } else {
-            root.innerHTML = JSON.stringify(value);
-          }
-        }
-        else {
-          root.innerHTML = value;
+      if (typeof value === 'object') {
+        if (value.$$typeof && value.props) {
+          _rctDOM.render(value, root);
+        } else {
+          root.innerHTML = JSON.stringify(value);
         }
       }
-      `,
-    ];
+      else {
+        root.innerHTML = value;
+      }
+    }
+    `;
+    const showFuncNoop = "var show = () => {}";
+
+    const cumulativeCode: string[] = [];
     for (const cell of orderedCells) {
       if (cell.type === "code") {
+        if (cell.id === cellId) {
+          cumulativeCode.push(showFunc);
+        } else {
+          cumulativeCode.push(showFuncNoop);
+        }
         cumulativeCode.push(cell.content);
       }
       if (cell.id === cellId) {
