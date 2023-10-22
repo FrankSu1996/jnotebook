@@ -6,10 +6,10 @@ import { Preview } from "@/components/ui/Editor/preview";
 import { bundleRawCode } from "@/lib/bundler";
 import { Resizable } from "../resizable";
 import React from "react";
-import { Cell, bundleCodeAction, selectBundle, updateCell } from "@/app/Redux/Slices/cellSlice";
+import { Cell, bundleCodeAction, selectBundle, updateCell, useCumulativeCode } from "@/app/Redux/Slices/cellSlice";
 import { useDispatch, useSelector } from "react-redux";
 import dynamic from "next/dynamic";
-import { AppDispatch } from "@/app/Redux/store";
+import { AppDispatch, RootState } from "@/app/Redux/store";
 
 const MemoizedPreview = React.memo(Preview);
 
@@ -43,23 +43,26 @@ export default IndeterminateProgress;
 export const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   const dispatch: AppDispatch = useDispatch();
   const bundle = useSelector(selectBundle(cell.id));
+  const cumulativeCode = useCumulativeCode(cell.id);
+  console.log(cumulativeCode);
+
   const bundleRef = useRef<any>();
   bundleRef.current = bundle;
 
   useEffect(() => {
     if (!bundleRef.current) {
-      dispatch(bundleCodeAction(cell.id));
+      dispatch(bundleCodeAction({ cellId: cell.id, rawCode: cumulativeCode.join("\n") }));
       return;
     }
 
     const timer = setTimeout(async () => {
-      dispatch(bundleCodeAction(cell.id));
+      dispatch(bundleCodeAction({ cellId: cell.id, rawCode: cumulativeCode.join("\n") }));
     }, 1000);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [cell.content, cell.id, dispatch]);
+  }, [dispatch, cumulativeCode, cell.id]);
 
   return (
     <Resizable direction="vertical">

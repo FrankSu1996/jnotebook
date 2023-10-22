@@ -1,13 +1,15 @@
 "use client";
 
 import { bundleRawCode } from "@/lib/bundler";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 
 export type CellType = "code" | "text";
 export type Direction = "up" | "down";
 
-interface RootState {
+export interface RootState {
   cells: CellState;
 }
 export interface Cell {
@@ -42,10 +44,9 @@ const initialState: CellState = {
   bundledCode: {},
 };
 
-export const bundleCodeAction = createAsyncThunk<{ bundle: any; cellId: string }, string, { state: RootState }>(
+export const bundleCodeAction = createAsyncThunk<{ bundle: any; cellId: string }, { cellId: string; rawCode: string }, { state: RootState }>(
   "cells/bundleCode",
-  async (cellId: string, thunkAPI) => {
-    const rawCode = thunkAPI.getState().cells.data[cellId].content;
+  async ({ cellId, rawCode }) => {
     const bundle = await bundleRawCode(rawCode);
     return {
       bundle,
@@ -96,7 +97,7 @@ export const cellSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(bundleCodeAction.pending, (state, action) => {
-      state.bundledCode[action.meta.arg] = {
+      state.bundledCode[action.meta.arg.cellId] = {
         code: "",
         error: "",
         loading: true,
@@ -118,3 +119,24 @@ export default cellSlice.reducer;
 export const selectData = (state: RootState) => state.cells.data;
 export const selectOrder = (state: RootState) => state.cells.order;
 export const selectBundle = (id) => (state: RootState) => state.cells.bundledCode[id];
+
+// Memoized selector to get cumulative code up to a given cell.id
+export const useCumulativeCode = (cellId) => {
+  const order = useSelector((state: RootState) => state.cells.order);
+  const data = useSelector((state: RootState) => state.cells.data);
+
+  return useMemo(() => {
+    const orderedCells = order.map((id) => data[id]);
+
+    const cumulativeCode: string[] = [];
+    for (const cell of orderedCells) {
+      if (cell.type === "code") {
+        cumulativeCode.push(cell.content);
+      }
+      if (cell.id === cellId) {
+        break;
+      }
+    }
+    return cumulativeCode;
+  }, [order, data, cellId]);
+};
