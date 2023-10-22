@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import "../styles/Preview.css";
 
 interface PreviewProps {
@@ -38,12 +38,14 @@ const html = `
 export const Preview: React.FC<PreviewProps> = ({ code, error }) => {
   const iframeRef = useRef<any>();
 
-  if (iframeRef.current) {
-    iframeRef.current.srcdoc = html;
-    setTimeout(() => {
-      iframeRef.current.contentWindow.postMessage(code, "*");
-    }, 50);
-  }
+  useEffect(() => {
+    if (iframeRef.current) {
+      iframeRef.current.srcdoc = html;
+      setTimeout(() => {
+        iframeRef.current.contentWindow.postMessage(code, "*");
+      }, 50);
+    }
+  }, [code]);
 
   return (
     <div className="iframe-wrapper">

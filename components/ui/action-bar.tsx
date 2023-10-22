@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { Button } from "./button";
-import { bundleCodeAction, deleteCell, moveCell } from "@/app/Redux/Slices/cellSlice";
+import { deleteCell, moveCell } from "@/app/Redux/Slices/cellSlice";
 import { ChevronUp, ChevronDown, X } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@radix-ui/react-tooltip";
 import { AppDispatch } from "@/app/Redux/store";
@@ -65,14 +65,6 @@ export const ActionBar: React.FC<ActionBarProps> = ({ id }) => {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <Button
-        variant={"destructive"}
-        size={"sm"}
-        onClick={() => dispatch(bundleCodeAction(id))}
-        className="rounded-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-      >
-        Bundle redux test
-      </Button>
     </div>
   );
 };

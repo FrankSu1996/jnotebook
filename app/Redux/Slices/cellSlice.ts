@@ -24,11 +24,13 @@ interface CellState {
     [key: string]: Cell;
   };
   bundledCode: {
-    [key: string]: {
-      loading: boolean;
-      error: "";
-      code: "";
-    };
+    [key: string]:
+      | {
+          loading: boolean;
+          error: "";
+          code: "";
+        }
+      | undefined;
   };
 }
 
@@ -94,7 +96,6 @@ export const cellSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(bundleCodeAction.pending, (state, action) => {
-      console.log(action.meta.arg);
       state.bundledCode[action.meta.arg] = {
         code: "",
         error: "",
@@ -116,3 +117,4 @@ export const { deleteCell, insertCellAfter, moveCell, updateCell } = cellSlice.a
 export default cellSlice.reducer;
 export const selectData = (state: RootState) => state.cells.data;
 export const selectOrder = (state: RootState) => state.cells.order;
+export const selectBundle = (id) => (state: RootState) => state.cells.bundledCode[id];

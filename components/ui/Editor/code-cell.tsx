@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { CodeEditor } from "@/components/ui/Editor/code-editor";
 import { Preview } from "@/components/ui/Editor/preview";
 import { bundleRawCode } from "@/lib/bundler";
 import { Resizable } from "../resizable";
 import React from "react";
-import { Cell, updateCell } from "@/app/Redux/Slices/cellSlice";
-import { useDispatch } from "react-redux";
+import { Cell, bundleCodeAction, selectBundle, updateCell } from "@/app/Redux/Slices/cellSlice";
+import { useDispatch, useSelector } from "react-redux";
 import dynamic from "next/dynamic";
+import { AppDispatch } from "@/app/Redux/store";
 
 const MemoizedPreview = React.memo(Preview);
 
@@ -40,24 +41,25 @@ const IndeterminateProgress = () => {
 export default IndeterminateProgress;
 
 export const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
-  const [code, setCode] = useState("");
-  const [error, setError] = useState<string | undefined>(undefined);
-
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
+  const bundle = useSelector(selectBundle(cell.id));
+  const bundleRef = useRef<any>();
+  bundleRef.current = bundle;
 
   useEffect(() => {
+    if (!bundleRef.current) {
+      dispatch(bundleCodeAction(cell.id));
+      return;
+    }
+
     const timer = setTimeout(async () => {
-      const output = await bundleRawCode(cell.content);
-      if (output?.code) {
-        setCode(output.code);
-      }
-      if (output?.error) setError(output.error);
+      dispatch(bundleCodeAction(cell.id));
     }, 1000);
 
     return () => {
       clearTimeout(timer);
     };
-  }, [cell.content]);
+  }, [cell.content, cell.id, dispatch]);
 
   return (
     <Resizable direction="vertical">
@@ -71,7 +73,17 @@ export const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
             }}
           />
         </Resizable>
-        <MemoizedPreview code={code} error={error} />
+        <div className="h-full flex-grow bg-white">
+          {!bundle || bundle.loading ? (
+            <div className="h-full w-full flex-grow flex flex-col bg-white justify-center pl-[5%] pr-[5%] animate-fade-in">
+              <IndeterminateProgress />
+              <IndeterminateProgress />
+              <IndeterminateProgress />
+            </div>
+          ) : (
+            <MemoizedPreview code={bundle.code} error={bundle.error} />
+          )}
+        </div>
       </div>
     </Resizable>
   );
