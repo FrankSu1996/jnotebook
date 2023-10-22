@@ -15,6 +15,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
+    const response = await fetch("/api/login");
+    const data = await response.text();
+    console.log(data);
     setIsLoading(true);
 
     setTimeout(() => {

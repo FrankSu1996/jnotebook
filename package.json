@@ -31,6 +31,7 @@
     "monaco-editor": "^0.44.0",
     "monaco-jsx-highlighter": "^2.0.4",
     "mongodb": "^6.2.0",
+    "mongoose": "^7.6.3",
     "next": "13.5.4",
     "next-themes": "^0.2.1",
     "prettier": "^3.0.3",
