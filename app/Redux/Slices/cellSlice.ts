@@ -1,6 +1,7 @@
 "use client";
 
-import { createSlice } from "@reduxjs/toolkit";
+import { bundleRawCode } from "@/lib/bundler";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
 export type CellType = "code" | "text";
@@ -22,6 +23,13 @@ interface CellState {
   data: {
     [key: string]: Cell;
   };
+  bundledCode: {
+    [key: string]: {
+      loading: boolean;
+      error: "";
+      code: "";
+    };
+  };
 }
 
 const initialState: CellState = {
@@ -29,7 +37,20 @@ const initialState: CellState = {
   error: null,
   order: [],
   data: {},
+  bundledCode: {},
 };
+
+export const bundleCodeAction = createAsyncThunk<{ bundle: any; cellId: string }, string, { state: RootState }>(
+  "cells/bundleCode",
+  async (cellId: string, thunkAPI) => {
+    const rawCode = thunkAPI.getState().cells.data[cellId].content;
+    const bundle = await bundleRawCode(rawCode);
+    return {
+      bundle,
+      cellId,
+    };
+  },
+);
 
 export const cellSlice = createSlice({
   name: "cells",
@@ -70,6 +91,23 @@ export const cellSlice = createSlice({
         state.order.splice(index + 1, 0, cell.id);
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(bundleCodeAction.pending, (state, action) => {
+      console.log(action.meta.arg);
+      state.bundledCode[action.meta.arg] = {
+        code: "",
+        error: "",
+        loading: true,
+      };
+    });
+    builder.addCase(bundleCodeAction.fulfilled, (state, action) => {
+      state.bundledCode[action.payload.cellId] = {
+        error: action.payload.bundle.error,
+        loading: false,
+        code: action.payload.bundle.code,
+      };
+    });
   },
 });
 
