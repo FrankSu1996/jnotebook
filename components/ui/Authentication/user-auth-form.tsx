@@ -61,11 +61,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
         </div>
       </div>
-      <Button variant="outline" type="button" disabled={isLoading} onClick={() => signIn()}>
+      <Button variant="outline" type="button" disabled={isLoading} onClick={() => signIn("github")}>
         {isLoading ? <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> : <Icons.gitHub className="mr-2 h-4 w-4" />} Github
-      </Button>
-      <Button variant="outline" type="button" disabled={isLoading} onClick={() => signOut()}>
-        log out
       </Button>
     </div>
   );
