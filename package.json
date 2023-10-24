@@ -32,8 +32,6 @@
     "lucide-react": "^0.287.0",
     "monaco-editor": "^0.44.0",
     "monaco-jsx-highlighter": "^2.0.4",
-    "mongodb": "^6.2.0",
-    "mongoose": "^7.6.3",
     "next": "13.5.4",
     "next-auth": "^4.24.3",
     "next-themes": "^0.2.1",
@@ -45,8 +43,7 @@
     "server-only": "^0.0.1",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
-    "uuid": "^9.0.1",
-    "vercel": "^32.5.0"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -60,6 +57,7 @@
     "nodemailer": "^6.9.7",
     "postcss": "^8",
     "tailwindcss": "^3",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vercel": "^32.5.0"
   }
 }
