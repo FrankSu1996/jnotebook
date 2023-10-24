@@ -1,6 +1,4 @@
 import dbConnect from "@/lib/mongodb/dbConnect";
-import clientPromise from "@/lib/mongodb/mongodb";
-import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   try {
