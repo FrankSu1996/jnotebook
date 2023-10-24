@@ -17,11 +17,13 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { useDispatch } from "react-redux";
 import { setShowLoginDialog } from "@/app/Redux/Slices/uiSlice";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const Navbar = () => {
   const { data: session, status } = useSession();
   const dispatch = useDispatch();
   const dropDownLabel = session ? "Welcome, " + session.user?.name : "Not logged in.";
+  console.log(session);
 
   const loginDropdownMenuItem = (
     <DropdownMenuItem onClick={() => dispatch(setShowLoginDialog(true))}>
@@ -37,6 +39,8 @@ export const Navbar = () => {
     </DropdownMenuItem>
   );
 
+  const imageUrl = session?.user?.image;
+
   return (
     <div className="border-b mb-10 px-3">
       <div className="flex h-16 items-center px-4 w-full">
@@ -46,11 +50,14 @@ export const Navbar = () => {
           <ThemeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon" className="border-none ml-3">
-                <UserCircle2 size={35} />
-              </Button>
+              <Avatar className="ml-3 cursor-pointer">
+                <AvatarImage src={imageUrl ? imageUrl : undefined} />
+                <AvatarFallback>
+                  <UserCircle2 size={40} />
+                </AvatarFallback>
+              </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent className="mr-2">
               <DropdownMenuLabel>{dropDownLabel}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {session ? logoutDropdownMenuItem : loginDropdownMenuItem}
