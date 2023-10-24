@@ -5,7 +5,7 @@ import { Button } from "../button";
 
 export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
   return (
-    <nav className={cn("flex items-center space-x-10 lg:space-x-10 p-3", className)} {...props}>
+    <nav className={cn("flex items-center space-x-10 lg:space-x-10", className)} {...props}>
       <div className="flex items-center">
         <ScrollText className="mr-1" />
         <Link href="/" className="text-m font-medium transition-colors hover:text-primary">

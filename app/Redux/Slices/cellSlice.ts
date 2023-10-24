@@ -5,20 +5,18 @@ import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit"
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
+import { RootState } from "../store";
 
 export type CellType = "code" | "text";
 export type Direction = "up" | "down";
 
-export interface RootState {
-  cells: CellState;
-}
 export interface Cell {
   id: string;
   type: CellType;
   content: string;
 }
 
-interface CellState {
+export interface CellState {
   loading: boolean;
   error: string | null;
   order: string[];

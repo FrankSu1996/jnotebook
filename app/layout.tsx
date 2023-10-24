@@ -2,15 +2,10 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { ReduxProvider } from "./Redux/ReduxProvider";
-import { MainNav } from "@/components/ui/Layout/main-nav";
-import { Button } from "@/components/ui/button";
-import { LogIn } from "lucide-react";
-import Link from "next/link";
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import SessionProvider from "@/components/ui/Authentication/session-provider";
 import { getServerSession } from "next-auth";
+import { Navbar } from "@/components/ui/Layout/navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,33 +24,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <SessionProvider session={session}>
           <ReduxProvider>
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-              <div className="container">
-                <div className="border-b mb-10">
-                  <div className="flex h-16 items-center px-4 w-full">
-                    {/* <TeamSwitcher /> */}
-                    <MainNav />
-                    <div className="ml-auto flex items-center">
-                      <ThemeToggle />
-                      <Link href={"/login"}>
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Button variant="outline" size="icon" className="border-none">
-                                <LogIn />
-                                <span className="sr-only">Login</span>
-                              </Button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>Login</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-                {children}
-              </div>
+              <Navbar />
+              <div className="container">{children}</div>
             </ThemeProvider>
           </ReduxProvider>
         </SessionProvider>
