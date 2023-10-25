@@ -6,6 +6,7 @@ import { ReduxProvider } from "./Redux/ReduxProvider";
 import SessionProvider from "@/components/ui/Authentication/session-provider";
 import { getServerSession } from "next-auth";
 import { Navbar } from "@/components/ui/Layout/navbar";
+import { NavbarMenu } from "@/components/ui/Layout/main-menu";
 
 const inter = Inter({ subsets: ["latin"] });
 

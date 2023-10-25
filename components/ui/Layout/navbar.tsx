@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { setShowLoginDialog } from "@/app/Redux/Slices/uiSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getToken } from "next-auth/jwt";
+import { NavbarMenu } from "./main-menu";
 
 export const Navbar = () => {
   const { data: session } = useSession();
@@ -43,6 +44,7 @@ export const Navbar = () => {
       <div className="flex h-16 items-center px-4 w-full">
         {/* <TeamSwitcher /> */}
         <MainNav />
+        <NavbarMenu />
         <div className="ml-auto flex items-center">
           <ThemeToggle />
           <DropdownMenu>

@@ -12,8 +12,9 @@ import traverse from "@babel/traverse";
 import MonacoJSXHighlighter from "monaco-jsx-highlighter";
 
 import { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteCell, moveCell } from "@/app/Redux/Slices/cellSlice";
+import { selectCursorInsideCodeEditor, setCursorInsideCodeEditor } from "@/app/Redux/Slices/uiSlice";
 
 interface EditorProps {
   id: string;
@@ -23,7 +24,7 @@ interface EditorProps {
 
 export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor>();
-  const [isCursorInside, setIsCursorInside] = useState(false);
+  const isCursorInside = useSelector(selectCursorInsideCodeEditor);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,6 +32,7 @@ export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }
       if (event.ctrlKey && event.key === "s") {
         event.preventDefault();
         onFormatClick();
+        console.log("formatting file");
       }
     }
 
@@ -110,7 +112,11 @@ export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }
   };
 
   return (
-    <div className="relative h-full w-[calc(100%-10px)]" onMouseEnter={() => setIsCursorInside(true)} onMouseLeave={() => setIsCursorInside(false)}>
+    <div
+      className="relative h-full w-[calc(100%-10px)]"
+      onMouseEnter={() => dispatch(setCursorInsideCodeEditor(true))}
+      onMouseLeave={() => dispatch(setCursorInsideCodeEditor(false))}
+    >
       <MonacoEditor
         onMount={handleEditorDidMount}
         onChange={onChange}

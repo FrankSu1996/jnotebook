@@ -17,5 +17,5 @@ export async function POST(request: Request) {
 
   const { data, error } = await supabase.from("Notebook").insert([noteBookToSave]).select();
 
-  return Response.json({ testing: 123 });
+  return Response.json({ data, error });
 }

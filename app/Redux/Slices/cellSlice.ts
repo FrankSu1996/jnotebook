@@ -67,12 +67,8 @@ export const saveCellsToFileAction = createAsyncThunk<void, { userEmail: string;
       fileName,
       userEmail,
     };
-    try {
-      const result = await fetch("/api/cells", { method: "post", body: JSON.stringify(body) });
-      console.log(result);
-    } catch (e) {
-      console.log(e);
-    }
+    const response = await fetch("/api/cells", { method: "post", body: JSON.stringify(body) });
+    return await response.json();
   },
 );
 

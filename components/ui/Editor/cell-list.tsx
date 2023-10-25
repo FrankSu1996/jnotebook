@@ -4,11 +4,28 @@ import { useSelector } from "react-redux";
 import { selectOrder, selectData } from "@/app/Redux/Slices/cellSlice";
 import { CellListItem } from "./cell-list-item";
 import { AddCell } from "../add-cell";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+import { useEffect } from "react";
+import { selectCursorInsideCodeEditor, selectIsAnyDialogOpen } from "@/app/Redux/Slices/uiSlice";
 
 export const CellList: React.FC = () => {
   const order = useSelector(selectOrder);
   const data = useSelector(selectData);
+  const cursorInsideCodeEditor = useSelector(selectCursorInsideCodeEditor);
+  const isAnyDialogOpen = useSelector(selectIsAnyDialogOpen);
+
+  useEffect(() => {
+    function handleKeyPress(event: KeyboardEvent) {
+      if (event.ctrlKey && event.key === "s" && !cursorInsideCodeEditor && !isAnyDialogOpen) {
+        event.preventDefault();
+        console.log("saving file");
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyPress);
+
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [cursorInsideCodeEditor, isAnyDialogOpen]);
 
   const cellList = order?.map((id) => {
     return data[id];
