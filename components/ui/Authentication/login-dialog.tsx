@@ -11,7 +11,6 @@ export const LoginDialog = () => {
   const [isLoading, setIsLoading] = useState(false);
   const showDialog = useSelector(selectShowLoginDialog);
   const dispatch = useDispatch();
-
   return (
     <Dialog open={showDialog}>
       <DialogClose
