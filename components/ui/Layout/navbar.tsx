@@ -1,9 +1,7 @@
 "use client";
 
 import { MainNav } from "@/components/ui/Layout/main-nav";
-import { Button } from "@/components/ui/button";
 import { LogIn, LogOut } from "lucide-react";
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { UserCircle2 } from "lucide-react";
 import {
@@ -18,13 +16,12 @@ import { signOut, useSession } from "next-auth/react";
 import { useDispatch } from "react-redux";
 import { setShowLoginDialog } from "@/app/Redux/Slices/uiSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getToken } from "next-auth/jwt";
 
 export const Navbar = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const dispatch = useDispatch();
   const dropDownLabel = session ? "Welcome, " + session.user?.name : "Not logged in.";
-  console.log(session);
-
   const loginDropdownMenuItem = (
     <DropdownMenuItem onClick={() => dispatch(setShowLoginDialog(true))}>
       <LogIn className="mr-2" />
