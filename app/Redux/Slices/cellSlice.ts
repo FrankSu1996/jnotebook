@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { RootState } from "../store";
+import { POSTCellsRequestBody } from "@/types/api";
 
 export type CellType = "code" | "text";
 export type Direction = "up" | "down";
@@ -42,6 +43,7 @@ const initialState: CellState = {
   bundledCode: {},
 };
 
+// thunks
 export const bundleCodeAction = createAsyncThunk<{ bundle: any; cellId: string }, { cellId: string; rawCode: string }, { state: RootState }>(
   "cells/bundleCode",
   async ({ cellId, rawCode }) => {
@@ -50,6 +52,27 @@ export const bundleCodeAction = createAsyncThunk<{ bundle: any; cellId: string }
       bundle,
       cellId,
     };
+  },
+);
+export const saveCellsToFileAction = createAsyncThunk<void, { userEmail: string; fileName: string }, { state: RootState }>(
+  "cells/saveCells",
+  async ({ userEmail, fileName }, { getState }) => {
+    const {
+      cells: { data, order },
+    } = getState();
+
+    const cells = order.map((id) => data[id]);
+    const body: POSTCellsRequestBody = {
+      cells,
+      fileName,
+      userEmail,
+    };
+    try {
+      const result = await fetch("/api/cells", { method: "post", body: JSON.stringify(body) });
+      console.log(result);
+    } catch (e) {
+      console.log(e);
+    }
   },
 );
 
