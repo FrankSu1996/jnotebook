@@ -1,7 +1,7 @@
 "use client";
 
 import { MainNav } from "@/components/ui/Layout/main-nav";
-import { LogIn, LogOut } from "lucide-react";
+import { LogIn, LogOut, Settings } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { UserCircle2 } from "lucide-react";
 import {
@@ -16,7 +16,6 @@ import { signOut, useSession } from "next-auth/react";
 import { useDispatch } from "react-redux";
 import { setShowLoginDialog } from "@/app/Redux/Slices/uiSlice";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getToken } from "next-auth/jwt";
 import { NavbarMenu } from "./main-menu";
 
 export const Navbar = () => {
@@ -60,6 +59,11 @@ export const Navbar = () => {
               <DropdownMenuLabel>{dropDownLabel}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {session ? logoutDropdownMenuItem : loginDropdownMenuItem}
+              <DropdownMenuSeparator />
+              <DropdownMenuItem disabled={!session}>
+                <Settings className="mr-2" />
+                <div>Settings</div>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
