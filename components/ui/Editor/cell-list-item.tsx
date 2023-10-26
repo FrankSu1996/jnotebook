@@ -26,7 +26,7 @@ export const CellListItem: React.FC<CellListItemProps> = ({ cell }) => {
   }
 
   return (
-    <div className="relative pb-5">
+    <div className="relative pb-5 rounded">
       <ActionBar id={cell.id} />
       {child}
     </div>

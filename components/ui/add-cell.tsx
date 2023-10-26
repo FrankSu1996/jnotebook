@@ -17,7 +17,7 @@ export const AddCell: React.FC<AddCellProps> = ({ previousCellId, forceVisible }
   const opacity = forceVisible ? "opacity-100" : "opacity-0";
 
   return (
-    <div className={`relative ${opacity} hover:opacity-100 duration-300 ease-in delay-100 my-3`}>
+    <div className={`relative ${opacity} hover:opacity-100 duration-300 ease-in delay-100 my-6`}>
       <div className="flex justify-center">
         <Button
           variant={"outline"}

@@ -24,6 +24,7 @@ const html = `
 
           window.addEventListener('message', (event) => {
             try {
+              console.log(event.data);
               eval(event.data);
             } catch(err) {
               handleError(err);
