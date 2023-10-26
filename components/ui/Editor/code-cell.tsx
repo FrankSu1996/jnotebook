@@ -61,9 +61,9 @@ export const CodeCell: React.FC<CodeCellProps> = ({ cell }) => {
   }, [dispatch, cumulativeCode, cell.id]);
 
   return (
-    <Resizable direction="vertical">
+    <Resizable direction="vertical" cellId={cell.id}>
       <div className="h-full flex flex-row">
-        <Resizable direction="horizontal">
+        <Resizable direction="horizontal" cellId={cell.id}>
           <DynamicCodeEditor
             id={cell.id}
             initialValue=""

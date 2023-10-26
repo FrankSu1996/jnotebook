@@ -3,24 +3,28 @@
 import { ResizableBox, ResizableBoxProps } from "react-resizable";
 import "@/components/ui/styles/Resizable.css";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCodeCellWidth, setCodeCellWidth } from "@/app/Redux/Slices/uiSlice";
 
 interface ResizableProps {
   direction: "horizontal" | "vertical";
   children?: React.ReactNode;
+  cellId: string;
 }
 
-export const Resizable: React.FC<ResizableProps> = ({ direction, children }) => {
+export const Resizable: React.FC<ResizableProps> = ({ direction, children, cellId }) => {
   const [innerHeight, setInnerHeight] = useState(0);
   const [innerWidth, setInnerWidth] = useState(0);
-  const [width, setWidth] = useState(0);
+  const width = useSelector(selectCodeCellWidth(cellId));
+  const dispatch = useDispatch();
 
   let resizableProps: ResizableBoxProps;
 
   useEffect(() => {
     setInnerHeight(window.innerHeight);
     setInnerWidth(window.innerWidth);
-    setWidth(window.innerWidth * 0.5);
-  }, []);
+    dispatch(setCodeCellWidth({ id: cellId, width: window.innerWidth * 0.5 }));
+  }, [cellId, dispatch]);
 
   useEffect(() => {
     let timer: any;
@@ -33,7 +37,7 @@ export const Resizable: React.FC<ResizableProps> = ({ direction, children }) => 
         setInnerHeight(window.innerHeight);
         setInnerWidth(window.innerWidth);
         if (window.innerWidth * 0.5 < width) {
-          setWidth(window.innerWidth * 0.5);
+          dispatch(setCodeCellWidth({ id: cellId, width: window.innerWidth * 0.5 }));
         }
       }, 100);
     };
@@ -41,7 +45,7 @@ export const Resizable: React.FC<ResizableProps> = ({ direction, children }) => 
     window.addEventListener("resize", listener);
 
     return () => window.removeEventListener("resize", listener);
-  }, [width]);
+  }, [width, cellId, dispatch]);
 
   if (direction === "horizontal") {
     resizableProps = {
@@ -52,7 +56,7 @@ export const Resizable: React.FC<ResizableProps> = ({ direction, children }) => 
       minConstraints: [innerWidth * 0.2, Infinity],
       maxConstraints: [innerWidth * 0.75, Infinity],
       onResizeStop: (event, data) => {
-        setWidth(data.size.width);
+        dispatch(setCodeCellWidth({ id: cellId, width: data.size.width }));
       },
     };
   } else {

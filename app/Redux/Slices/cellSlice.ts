@@ -4,7 +4,6 @@ import { bundleRawCode } from "@/lib/bundler";
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
 import { RootState } from "../store";
 import { POSTCellsRequestBody } from "@/types/api";
 
@@ -95,11 +94,11 @@ export const cellSlice = createSlice({
       state.order[index] = state.order[targetIndex];
       state.order[targetIndex] = action.payload.id;
     },
-    insertCellAfter: (state, action: { payload: { id: string | null; cellType: CellType } }) => {
+    insertCellAfter: (state, action: { payload: { id: string | null; cellType: CellType; newCellId: string } }) => {
       const cell: Cell = {
         content: "",
         type: action.payload.cellType,
-        id: uuidv4(),
+        id: action.payload.newCellId,
       };
 
       state.data[cell.id] = cell;

@@ -24,7 +24,7 @@ interface EditorProps {
 
 export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor>();
-  const isCursorInside = useSelector(selectCursorInsideCodeEditor);
+  const isCursorInside = useSelector(selectCursorInsideCodeEditor(id));
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -114,8 +114,8 @@ export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }
   return (
     <div
       className="relative h-full w-[calc(100%-10px)]"
-      onMouseEnter={() => dispatch(setCursorInsideCodeEditor(true))}
-      onMouseLeave={() => dispatch(setCursorInsideCodeEditor(false))}
+      onMouseEnter={() => dispatch(setCursorInsideCodeEditor({ id, cursorIsInside: true }))}
+      onMouseLeave={() => dispatch(setCursorInsideCodeEditor({ id, cursorIsInside: false }))}
     >
       <MonacoEditor
         onMount={handleEditorDidMount}
