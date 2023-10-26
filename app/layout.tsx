@@ -73,16 +73,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <head />
-      <body>
+      <body className="overflow-y-hidden">
         <SessionProvider session={session}>
           <ReduxProvider>
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
               <Navbar />
-              <div className="flex mt-32">
-                <div className="w-40 fixed">
+              <div className="flex flex-row mt-32">
+                <div className="w-70">
                   <Tree data={data}></Tree>
                 </div>
-                <div className="container">{children}</div>
+                <div className="container overflow-auto">{children}</div>
               </div>
             </ThemeProvider>
           </ReduxProvider>
