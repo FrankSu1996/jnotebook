@@ -6,7 +6,6 @@ import { ReduxProvider } from "./Redux/ReduxProvider";
 import SessionProvider from "@/components/ui/Authentication/session-provider";
 import { getServerSession } from "next-auth";
 import { Navbar } from "@/components/ui/Layout/navbar";
-import { NavbarMenu } from "@/components/ui/Layout/main-menu";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +25,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <ReduxProvider>
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
               <Navbar />
-              <div className="container">{children}</div>
+              {children}
             </ThemeProvider>
           </ReduxProvider>
         </SessionProvider>

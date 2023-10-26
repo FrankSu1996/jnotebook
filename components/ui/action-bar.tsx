@@ -13,7 +13,7 @@ export const ActionBar: React.FC<ActionBarProps> = ({ id }) => {
   const dispatch: AppDispatch = useDispatch();
 
   return (
-    <div className="flex z-20 group bg-muted opacity-50 hover:opacity-75 transition-opacity duration-300 rounded">
+    <div className="flex group bg-muted opacity-50 hover:opacity-75 transition-opacity duration-300 rounded">
       <div>
         <TooltipProvider>
           <Tooltip>

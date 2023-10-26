@@ -39,7 +39,7 @@ export const Navbar = () => {
   const imageUrl = session?.user?.image;
 
   return (
-    <div className="border-b mb-10 px-3">
+    <div className="border-b mb-10 px-3 fixed w-full top-0 bg-background z-50">
       <div className="flex h-16 items-center px-4 w-full">
         {/* <TeamSwitcher /> */}
         <MainNav />
