@@ -85,3 +85,24 @@
 .react-draggable-transparent-selection .cell-list {
   margin-bottom: 10rem;
 }
+
+/* Style the scrollbar container */
+::-webkit-scrollbar {
+  width: 10px; /* Adjust width of the scrollbar */
+}
+
+/* Style the scrollbar thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--border)); /* Color of the thumb */
+  border-radius: 4px; /* Rounded corners */
+}
+
+/* Style the scrollbar track (the background part) */
+::-webkit-scrollbar-track {
+  background-color: hsl(var(--background)); /* Color of the track */
+}
+/* Set the width and colors of the scrollbar for Firefox */
+body {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--border)) hsl(var(--background)); /* thumb and track color */
+}

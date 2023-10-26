@@ -55,10 +55,7 @@ const data = [
 
 export default function Page() {
   return (
-    <div className="flex h-screen mt-52">
-      <div className="w-64 overflow-y-auto">
-        <Tree data={data}></Tree>
-      </div>
+    <div className="flex h-screen">
       <div className="flex-1 h-full">
         <CellList />
       </div>
