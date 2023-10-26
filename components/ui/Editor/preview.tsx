@@ -8,7 +8,6 @@ interface PreviewProps {
 
 const html = `
     <html>
-      <head></head>
       <body>
         <div id="root"></div>
         <script>
@@ -49,7 +48,7 @@ export const Preview: React.FC<PreviewProps> = ({ code, error }) => {
 
   return (
     <div className="iframe-wrapper">
-      <iframe title="code preview" srcDoc={html} sandbox="allow-scripts" ref={iframeRef} />
+      <iframe title="code preview" srcDoc={html} sandbox="allow-scripts allow-same-origin" ref={iframeRef} />
       {error ? <div className="absolute top-2 left-2 text-red-700">{error}</div> : null}
     </div>
   );

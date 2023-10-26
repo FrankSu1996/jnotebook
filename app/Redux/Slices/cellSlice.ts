@@ -147,6 +147,7 @@ export const useCumulativeCode = (cellId) => {
     const showFunc = `
     import _rct from "react";
     import _rctDOM from "react-dom";
+    import 'bulmaswatch/default/bulmaswatch.min.css';
     var show = (value) => {
       const root = document.querySelector('#root');
 

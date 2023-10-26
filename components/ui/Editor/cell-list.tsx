@@ -6,15 +6,16 @@ import { CellListItem } from "./cell-list-item";
 import { AddCell } from "../add-cell";
 import { Fragment, useState } from "react";
 import { useEffect } from "react";
-import { selectCursorInsideCodeEditor, selectIsAnyDialogOpen } from "@/app/Redux/Slices/uiSlice";
+import { selectAnyCursorInsideCodeEditor, selectCursorInsideCodeEditor, selectIsAnyDialogOpen } from "@/app/Redux/Slices/uiSlice";
 
 export const CellList: React.FC = () => {
   const order = useSelector(selectOrder);
   const data = useSelector(selectData);
-  const cursorInsideCodeEditor = useSelector(selectCursorInsideCodeEditor);
+  const cursorInsideCodeEditor = useSelector(selectAnyCursorInsideCodeEditor);
   const isAnyDialogOpen = useSelector(selectIsAnyDialogOpen);
 
   useEffect(() => {
+    console.log("Cursor is inside any code editor");
     function handleKeyPress(event: KeyboardEvent) {
       if (event.ctrlKey && event.key === "s" && !cursorInsideCodeEditor && !isAnyDialogOpen) {
         event.preventDefault();

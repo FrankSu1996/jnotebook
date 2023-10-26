@@ -15,6 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCell, moveCell } from "@/app/Redux/Slices/cellSlice";
 import { selectCursorInsideCodeEditor, setCursorInsideCodeEditor } from "@/app/Redux/Slices/uiSlice";
+import { RootState } from "@/app/Redux/store";
 
 interface EditorProps {
   id: string;
@@ -24,7 +25,7 @@ interface EditorProps {
 
 export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor>();
-  const isCursorInside = useSelector(selectCursorInsideCodeEditor(id));
+  const isCursorInside = useSelector((state: RootState) => selectCursorInsideCodeEditor(state, id));
   const dispatch = useDispatch();
 
   useEffect(() => {
