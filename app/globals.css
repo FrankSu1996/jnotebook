@@ -94,7 +94,7 @@
 /* Style the scrollbar thumb (the draggable part) */
 ::-webkit-scrollbar-thumb {
   background-color: hsl(var(--border)); /* Color of the thumb */
-  border-radius: 4px; /* Rounded corners */
+  border-radius: 1rem; /* Rounded corners */
 }
 
 /* Style the scrollbar track (the background part) */
