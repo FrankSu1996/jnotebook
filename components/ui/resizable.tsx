@@ -57,6 +57,7 @@ export const Resizable: React.FC<ResizableProps> = ({ direction, children, cellI
       maxConstraints: [innerWidth * 0.75, Infinity],
       onResizeStop: (event, data) => {
         dispatch(setCodeCellWidth({ id: cellId, width: data.size.width }));
+        data.node.style.marginBottom = "300px";
       },
     };
   } else {

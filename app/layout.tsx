@@ -28,7 +28,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
               <Navbar />
               <div className="grid lg:grid-cols-5">
-                <Card className="pt-24 mr-[5%] z-0 hidden lg:block">
+                <Card className="mr-[5%] z-0 hidden lg:block">
                   <CardHeader>
                     <CardTitle>Saved Notebooks</CardTitle>
                     <CardDescription>Double click or use the context menu to open</CardDescription>
@@ -38,7 +38,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   </CardContent>
                 </Card>
                 <div className="col-span-4 overflow-y-auto">
-                  <div className="h-full px-4 py-6 lg:px-8 container pt-28">{children}</div>
+                  <div className="px-4 py-6 lg:px-8 container">{children}</div>
                 </div>
               </div>
             </ThemeProvider>

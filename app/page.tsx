@@ -54,8 +54,8 @@ const data = [
 
 export default function Page() {
   return (
-    <div className="flex h-screen">
-      <div className="flex-1 h-full">
+    <div className="flex h-[80vh]">
+      <div className="flex-1 mb-[50%]">
         <CellList />
       </div>
     </div>
