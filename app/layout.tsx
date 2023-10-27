@@ -8,6 +8,7 @@ import { getServerSession } from "next-auth";
 import { Navbar } from "@/components/ui/Layout/navbar";
 import { FileTree } from "@/components/ui/Layout/file-tree";
 const inter = Inter({ subsets: ["latin"] });
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,7 +27,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
               <Navbar />
               <div className="grid grid-cols-5">
-                <FileTree></FileTree>
+                <Card className="mt-24 ml-3 mr-[5%] z-0">
+                  <CardHeader>
+                    <CardTitle>Saved Notebooks</CardTitle>
+                  </CardHeader>
+                  <CardContent className="h-[70%]">
+                    <FileTree></FileTree>
+                  </CardContent>
+                </Card>
                 <div className="col-span-4">
                   <div className="h-full px-4 py-6 lg:px-8 container mt-24">{children}</div>
                 </div>

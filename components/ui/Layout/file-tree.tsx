@@ -5,10 +5,9 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tree } from "@/components/ui/tree-view";
 
 const data = [
-  { id: "1", name: "Unread" },
   {
     id: "3",
-    name: "Chat Rooms",
+    name: "use state notes",
     children: [
       { id: "c1", name: "General" },
       { id: "c2", name: "Random" },
@@ -17,35 +16,11 @@ const data = [
   },
   {
     id: "4",
-    name: "Direct Messages",
+    name: "use effect notes",
     children: [
-      {
-        id: "d1",
-        name: "Alice",
-        children: [
-          {
-            id: "d1",
-            name: "Alice2",
-            children: [
-              {
-                id: "d1",
-                name: "Alice",
-                children: [
-                  { id: "d1", name: "Alice2" },
-                  { id: "d2", name: "Bob2" },
-                  { id: "d3", name: "Charlie2" },
-                ],
-              },
-              { id: "d2", name: "Bob" },
-              { id: "d3", name: "Charlie" },
-            ],
-          },
-          { id: "d2", name: "Bob2" },
-          { id: "d3", name: "Charlie2" },
-        ],
-      },
-      { id: "d2", name: "Bob" },
-      { id: "d3", name: "Charlie" },
+      { id: "c9", name: "General" },
+      { id: "c7", name: "Random" },
+      { id: "c4", name: "Open Source Projects" },
     ],
   },
 ];
@@ -54,15 +29,13 @@ export const FileTree = () => {
   const [content, setContent] = useState("Admin Page");
 
   return (
-    <div className="mt-24 ml-3 mr-[5%]">
-      <Tree
-        data={data}
-        className="w-full h-full"
-        initialSlelectedItemId="f12"
-        onSelectChange={(item) => setContent(item?.name ?? "")}
-        folderIcon={Folder}
-        itemIcon={Workflow}
-      />
-    </div>
+    <Tree
+      data={data}
+      className="w-full h-full"
+      initialSlelectedItemId="c1"
+      onSelectChange={(item) => setContent(item?.name ?? "")}
+      folderIcon={Folder}
+      itemIcon={Workflow}
+    />
   );
 };
