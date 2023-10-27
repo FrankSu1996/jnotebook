@@ -4,6 +4,8 @@ import * as React from "react";
 // import { Tree } from "@acme/components/ui/tree";
 import { Workflow, Folder, Layout } from "lucide-react";
 import { Tree } from "@/components/ui/tree-view";
+import { ThemeCustomizer } from "@/components/ui/theme-customizer";
+import { ThemeWrapper } from "@/components/ui/theme-wrapper";
 
 const data = [
   { id: "1", name: "Unread" },
@@ -106,17 +108,12 @@ export default function Page() {
   const [content, setContent] = React.useState("Admin Page");
 
   return (
-    <div className="gap-12 min-h-screen">
-      <div className="flex min-h-full space-x-2">
-        <Tree
-          data={data}
-          className="flex-shrink-0 w-[200px] h-[460px] border-[1px]"
-          initialSlelectedItemId="f12"
-          onSelectChange={(item) => setContent(item?.name ?? "")}
-          folderIcon={Folder}
-          itemIcon={Workflow}
-        />
-      </div>
+    <div className="container">
+      <ThemeWrapper defaultTheme="zinc" className="relative flex flex-col items-start md:flex-row md:items-center">
+        <div className="px-4 pb-8 md:ml-auto md:pb-0">
+          <ThemeCustomizer />
+        </div>
+      </ThemeWrapper>
     </div>
   );
 }
