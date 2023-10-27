@@ -14,7 +14,7 @@ interface AddCellProps {
 export const AddCell: React.FC<AddCellProps> = ({ previousCellId, forceVisible }) => {
   const dispatch = useDispatch();
 
-  const opacity = forceVisible ? "opacity-100" : "opacity-0";
+  const opacity = forceVisible ? "opacity-100" : "opacity-50";
 
   return (
     <div className={`relative ${opacity} hover:opacity-100 duration-300 ease-in delay-100 my-6`}>

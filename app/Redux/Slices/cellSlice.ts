@@ -151,6 +151,11 @@ export const useCumulativeCode = (cellId) => {
     var show = (value) => {
       const root = document.querySelector('#root');
 
+      // Check if value is a React component
+      if (typeof value === 'function' && !value.$$typeof) {
+        value = _rct.createElement(value);  // Convert component to a React element
+      }
+
       if (typeof value === 'object') {
         if (value.$$typeof && value.props) {
           _rctDOM.render(value, root);
