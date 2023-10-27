@@ -83,7 +83,11 @@
 }
 
 .react-draggable-transparent-selection .cell-list {
-  margin-bottom: 10rem;
+  margin-bottom: 100rem;
+}
+
+.cell-list {
+  padding-bottom: 10rem;
 }
 
 /* Style the scrollbar container */
