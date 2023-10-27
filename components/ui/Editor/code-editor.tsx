@@ -10,7 +10,6 @@ import { Button } from "../button";
 import { parse } from "@babel/parser";
 import traverse from "@babel/traverse";
 import MonacoJSXHighlighter from "monaco-jsx-highlighter";
-
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCell, moveCell } from "@/app/Redux/Slices/cellSlice";
@@ -101,8 +100,6 @@ export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }
       },
     });
 
-    editorRef.current.createDecorationsCollection();
-
     const babelParse = (code) =>
       parse(code, {
         sourceType: "module",
@@ -133,6 +130,9 @@ export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }
         language="javascript"
         theme={appliedTheme}
         options={{
+          scrollbar: {
+            alwaysConsumeMouseWheel: false,
+          },
           wordWrap: "on",
           minimap: { enabled: false },
           showUnused: false,

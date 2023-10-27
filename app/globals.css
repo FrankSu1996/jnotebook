@@ -92,7 +92,7 @@
 
 /* Style the scrollbar container */
 ::-webkit-scrollbar {
-  width: 10px; /* Adjust width of the scrollbar */
+  width: 11px; /* Adjust width of the scrollbar */
 }
 
 /* Style the scrollbar thumb (the draggable part) */

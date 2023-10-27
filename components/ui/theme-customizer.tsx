@@ -119,7 +119,7 @@ export function ThemeCustomizer() {
   );
 }
 
-function Customizer() {
+export function Customizer() {
   const [mounted, setMounted] = React.useState(false);
   const { setTheme: setMode, resolvedTheme: mode } = useTheme();
   const [config, setConfig] = useConfig();

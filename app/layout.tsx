@@ -10,6 +10,8 @@ import { FileTree } from "@/components/ui/Layout/file-tree";
 const inter = Inter({ subsets: ["latin"] });
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Terminal } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -36,6 +38,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   <CardContent className="h-[70%]">
                     <FileTree></FileTree>
                   </CardContent>
+                  <CardFooter className="p-2">
+                    <Alert className="w-full">
+                      <Terminal className="h-4 w-4" />
+                      <AlertDescription>You need to be logged in to see your notes.</AlertDescription>
+                    </Alert>
+                  </CardFooter>
                 </Card>
                 <div className="col-span-4 overflow-y-auto">
                   <div className="px-4 py-6 lg:px-8 container">{children}</div>
