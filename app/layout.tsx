@@ -26,8 +26,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <ReduxProvider>
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
               <Navbar />
-              <div className="grid grid-cols-5">
-                <Card className="mt-24 ml-3 mr-[5%] z-0">
+              <div className="grid lg:grid-cols-5">
+                <Card className="mt-24 ml-3 mr-[5%] z-0 mb-[50%] hidden lg:block">
                   <CardHeader>
                     <CardTitle>Saved Notebooks</CardTitle>
                   </CardHeader>
