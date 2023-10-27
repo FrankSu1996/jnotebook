@@ -27,7 +27,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
               <Navbar />
               <div className="grid lg:grid-cols-5">
-                <Card className="mt-24 ml-3 mr-[5%] z-0 mb-[50%] hidden lg:block">
+                <Card className="mt-24 mr-[5%] z-0 hidden lg:block">
                   <CardHeader>
                     <CardTitle>Saved Notebooks</CardTitle>
                   </CardHeader>
@@ -35,7 +35,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     <FileTree></FileTree>
                   </CardContent>
                 </Card>
-                <div className="col-span-4">
+                <div className="col-span-4 overflow-y-auto">
                   <div className="h-full px-4 py-6 lg:px-8 container mt-24">{children}</div>
                 </div>
               </div>

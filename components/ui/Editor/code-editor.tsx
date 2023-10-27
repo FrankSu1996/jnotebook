@@ -25,10 +25,19 @@ interface EditorProps {
 
 export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }) => {
   const editorRef = useRef<editor.IStandaloneCodeEditor>();
+  const editorWrapperRef = useRef<HTMLDivElement | null>(null);
   const isCursorInside = useSelector((state: RootState) => selectCursorInsideCodeEditor(state, id));
   const dispatch = useDispatch();
 
   useEffect(() => {
+    function handleOutsideClick(event) {
+      if (editorWrapperRef.current && !editorWrapperRef.current.contains(event.target)) {
+        dispatch(setCursorInsideCodeEditor({ id, cursorIsInside: false }));
+      } else {
+        dispatch(setCursorInsideCodeEditor({ id, cursorIsInside: true }));
+      }
+    }
+
     function handleKeyPress(event: KeyboardEvent) {
       if (event.ctrlKey && event.key === "s") {
         event.preventDefault();
@@ -40,10 +49,13 @@ export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }
       window.addEventListener("keydown", handleKeyPress);
     }
 
+    window.addEventListener("click", handleOutsideClick);
+
     return () => {
+      window.removeEventListener("click", handleOutsideClick);
       window.removeEventListener("keydown", handleKeyPress);
     };
-  }, [isCursorInside]);
+  }, [dispatch, id, isCursorInside]);
 
   const { theme, systemTheme } = useTheme();
   let appliedTheme;
@@ -112,11 +124,7 @@ export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }
   };
 
   return (
-    <div
-      className="relative h-full w-[calc(100%-10px)]"
-      onMouseEnter={() => dispatch(setCursorInsideCodeEditor({ id, cursorIsInside: true }))}
-      onMouseLeave={() => dispatch(setCursorInsideCodeEditor({ id, cursorIsInside: false }))}
-    >
+    <div ref={editorWrapperRef} className="relative h-full w-[calc(100%-10px)]">
       <MonacoEditor
         onMount={handleEditorDidMount}
         onChange={onChange}
