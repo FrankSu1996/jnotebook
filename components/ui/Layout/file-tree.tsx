@@ -29,13 +29,6 @@ export const FileTree = () => {
   const [content, setContent] = useState("Admin Page");
 
   return (
-    <Tree
-      data={data}
-      className="w-full h-full"
-      initialSlelectedItemId="c1"
-      onSelectChange={(item) => setContent(item?.name ?? "")}
-      folderIcon={Folder}
-      itemIcon={Workflow}
-    />
+    <Tree data={data} className="w-full h-full" onSelectChange={(item) => setContent(item?.name ?? "")} folderIcon={Folder} itemIcon={Workflow} />
   );
 };

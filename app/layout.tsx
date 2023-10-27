@@ -9,6 +9,7 @@ import { Navbar } from "@/components/ui/Layout/navbar";
 import { FileTree } from "@/components/ui/Layout/file-tree";
 const inter = Inter({ subsets: ["latin"] });
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,22 +22,23 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <head />
-      <body className="overflow-y-hidden">
+      <body className={cn("overflow-y-hidden", inter.className)}>
         <SessionProvider session={session}>
           <ReduxProvider>
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
               <Navbar />
               <div className="grid lg:grid-cols-5">
-                <Card className="mt-24 mr-[5%] z-0 hidden lg:block">
+                <Card className="pt-24 mr-[5%] z-0 hidden lg:block">
                   <CardHeader>
                     <CardTitle>Saved Notebooks</CardTitle>
+                    <CardDescription>Double click or use the context menu to open</CardDescription>
                   </CardHeader>
                   <CardContent className="h-[70%]">
                     <FileTree></FileTree>
                   </CardContent>
                 </Card>
                 <div className="col-span-4 overflow-y-auto">
-                  <div className="h-full px-4 py-6 lg:px-8 container mt-24">{children}</div>
+                  <div className="h-full px-4 py-6 lg:px-8 container pt-28">{children}</div>
                 </div>
               </div>
             </ThemeProvider>
