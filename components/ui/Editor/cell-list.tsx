@@ -15,7 +15,6 @@ export const CellList: React.FC = () => {
   const isAnyDialogOpen = useSelector(selectIsAnyDialogOpen);
 
   useEffect(() => {
-    console.log("Cursor is inside any code editor");
     function handleKeyPress(event: KeyboardEvent) {
       if (event.ctrlKey && event.key === "s" && !cursorInsideCodeEditor && !isAnyDialogOpen) {
         event.preventDefault();
@@ -42,7 +41,7 @@ export const CellList: React.FC = () => {
   });
 
   return (
-    <div className="rounded pr-32">
+    <div>
       {order.length === 0 ? <h1 className="text-center pb-6">Select a cell type to start your notebook.</h1> : null}
       <AddCell previousCellId={null} forceVisible={cellList.length === 0} />
       {renderedCells}

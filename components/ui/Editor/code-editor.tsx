@@ -33,7 +33,6 @@ export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }
       if (event.ctrlKey && event.key === "s") {
         event.preventDefault();
         onFormatClick();
-        console.log("formatting file");
       }
     }
 

@@ -23,7 +23,7 @@ export const Resizable: React.FC<ResizableProps> = ({ direction, children, cellI
   useEffect(() => {
     setInnerHeight(window.innerHeight);
     setInnerWidth(window.innerWidth);
-    dispatch(setCodeCellWidth({ id: cellId, width: window.innerWidth * 0.5 }));
+    dispatch(setCodeCellWidth({ id: cellId, width: window.innerWidth * 0.425 }));
   }, [cellId, dispatch]);
 
   useEffect(() => {
