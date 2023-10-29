@@ -100,8 +100,6 @@ export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }
       },
     });
 
-    editorRef.current.del
-
     const babelParse = (code) =>
       parse(code, {
         sourceType: "module",
