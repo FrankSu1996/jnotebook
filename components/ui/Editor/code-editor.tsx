@@ -120,24 +120,12 @@ export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }
     monacoJSXHighlighter.addJSXCommentCommand();
   };
 
-  var jsCode = [
-    '"use strict";',
-    "function Person(age) {",
-    "	if (age) {",
-    "		this.age = age;",
-    "	}",
-    "}",
-    "Person.prototype.getAge = function () {",
-    "	return this.age;",
-    "};",
-  ].join("\n");
-
   return (
     <div ref={editorWrapperRef} className="relative h-full w-[calc(100%-10px)]">
       <MonacoEditor
         onMount={handleEditorDidMount}
         onChange={onChange}
-        value={jsCode}
+        value={initialValue}
         height="100%"
         language="javascript"
         theme={appliedTheme}
