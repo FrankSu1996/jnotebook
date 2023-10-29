@@ -6,12 +6,9 @@ import { ReduxProvider } from "./Redux/ReduxProvider";
 import SessionProvider from "@/components/ui/Authentication/session-provider";
 import { getServerSession } from "next-auth";
 import { Navbar } from "@/components/ui/Layout/navbar";
-import { FileTree } from "@/components/ui/Layout/file-tree";
 const inter = Inter({ subsets: ["latin"] });
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Terminal } from "lucide-react";
+import { Sidebar } from "@/components/ui/Layout/side-bar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -30,21 +27,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
               <Navbar />
               <div className="grid lg:grid-cols-5">
-                <Card className="mr-[5%] z-0 hidden lg:block">
-                  <CardHeader>
-                    <CardTitle>Saved Notebooks</CardTitle>
-                    <CardDescription>Double click or use the context menu to open</CardDescription>
-                  </CardHeader>
-                  <CardContent className="h-[70%]">
-                    <FileTree></FileTree>
-                  </CardContent>
-                  <CardFooter className="p-2">
-                    <Alert className="w-full">
-                      <Terminal className="h-4 w-4" />
-                      <AlertDescription>You need to be logged in to see your notes.</AlertDescription>
-                    </Alert>
-                  </CardFooter>
-                </Card>
+                <Sidebar />
                 <div className="col-span-4 overflow-y-auto">
                   <div className="px-4 py-6 lg:px-8 container">{children}</div>
                 </div>

@@ -31,25 +31,7 @@ const data = [
         id: "4",
         name: "use effect notes",
         children: [
-          {
-            id: "3",
-            name: "use state notes",
-            children: [
-              { id: "c1", name: "General" },
-              { id: "c2", name: "Random" },
-              { id: "c3", name: "Open Source Projects" },
-            ],
-          },
-          {
-            id: "4",
-            name: "use effect notes",
-            children: [
-              { id: "c9", name: "General" },
-              { id: "c7", name: "Random" },
-              { id: "c4", name: "Open Source Projects" },
-            ],
-          },
-          ,
+          { id: "c9", name: "General" },
           { id: "c7", name: "Random" },
           { id: "c4", name: "Open Source Projects" },
         ],

@@ -18,7 +18,7 @@ export const LoginDialog = () => {
           dispatch(setShowLoginDialog(false));
         }}
       >
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[425px] testing">
           <DialogHeader>
             <DialogTitle className="pb-4">Create an Account</DialogTitle>
             <DialogDescription>Choose from one of the following authentication methods to get started.</DialogDescription>

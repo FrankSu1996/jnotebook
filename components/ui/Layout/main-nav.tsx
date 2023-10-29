@@ -8,7 +8,7 @@ export function MainNav({ className, ...props }: React.HTMLAttributes<HTMLElemen
     <nav className={cn("flex items-center space-x-10 lg:space-x-10", className)} {...props}>
       <Link href="/" className="text-m font-medium transition-colors hover:text-primary text-lg flex items-center">
         <ScrollText className="mr-2" />
-        JSNotebook
+        JSNotes
       </Link>
       {/* <Link href="/" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
         Customers

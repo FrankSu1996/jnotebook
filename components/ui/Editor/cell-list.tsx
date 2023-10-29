@@ -42,7 +42,7 @@ export const CellList: React.FC = () => {
 
   return (
     <div className="cell-list">
-      {order.length === 0 ? <h1 className="text-center pb-6">Select a cell type to start your notebook.</h1> : null}
+      {order.length === 0 ? <h1 className="text-center pb-6">Select a cell type to start your note.</h1> : null}
       <AddCell previousCellId={null} forceVisible={cellList.length === 0} />
       {renderedCells}
     </div>

@@ -1,28 +1,29 @@
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
+"use client";
 
-export const playlists = [
-  "Recently Added",
-  "Recently Played",
-  "Top Songs",
-  "Top Albums",
-  "Top Artists",
-  "Logic Discography",
-  "Bedtime Beats",
-  "Feeling Happy",
-  "I miss Y2K Pop",
-  "Runtober",
-  "Mellow Days",
-  "Eminem Essentials",
-];
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { FileTree } from "@/components/ui/Layout/file-tree";
+import { Terminal } from "lucide-react";
+import { useSession } from "next-auth/react";
 
-type Playlist = (typeof playlists)[number];
+export function Sidebar() {
+  const { data: session } = useSession();
 
-interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
-  playlists: Playlist[];
-}
-
-export function Sidebar({ className, playlists }: SidebarProps) {
-  return <div></div>;
+  return (
+    <Card className="mr-[5%] z-0 hidden lg:block">
+      <CardHeader>
+        <CardTitle>Saved Notebooks</CardTitle>
+        <CardDescription>Double click on a note or use the context menu to open</CardDescription>
+      </CardHeader>
+      <CardContent className="h-[75%]">
+        {!session && (
+          <Alert className="w-full">
+            <Terminal className="h-4 w-4" />
+            <AlertDescription>You need to be logged in to see your notes.</AlertDescription>
+          </Alert>
+        )}
+        {session && <FileTree />}
+      </CardContent>
+    </Card>
+  );
 }

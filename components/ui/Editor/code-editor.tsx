@@ -2,7 +2,7 @@
 
 import MonacoEditor from "@monaco-editor/react";
 import { useTheme } from "next-themes";
-import { editor, KeyMod, KeyCode } from "monaco-editor";
+import { editor, KeyMod, KeyCode, Range } from "monaco-editor";
 import * as prettier from "prettier/standalone";
 import parserBabel from "prettier/plugins/babel";
 import * as prettierPluginEstree from "prettier/plugins/estree";
@@ -100,6 +100,8 @@ export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }
       },
     });
 
+    editorRef.current.del
+
     const babelParse = (code) =>
       parse(code, {
         sourceType: "module",
@@ -120,12 +122,24 @@ export const CodeEditor: React.FC<EditorProps> = ({ initialValue, onChange, id }
     monacoJSXHighlighter.addJSXCommentCommand();
   };
 
+  var jsCode = [
+    '"use strict";',
+    "function Person(age) {",
+    "	if (age) {",
+    "		this.age = age;",
+    "	}",
+    "}",
+    "Person.prototype.getAge = function () {",
+    "	return this.age;",
+    "};",
+  ].join("\n");
+
   return (
     <div ref={editorWrapperRef} className="relative h-full w-[calc(100%-10px)]">
       <MonacoEditor
         onMount={handleEditorDidMount}
         onChange={onChange}
-        value={initialValue}
+        value={jsCode}
         height="100%"
         language="javascript"
         theme={appliedTheme}
