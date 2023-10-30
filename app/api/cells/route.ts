@@ -9,13 +9,13 @@ export async function POST(request: Request) {
   const supabase = createServerComponentClient<Database>({ cookies: () => cookieStore });
   const { cells, fileName, userEmail } = await request.json();
 
-  const noteBookToSave: Insert<"Notebook"> = {
-    cells,
-    file_name: fileName,
-    user_email: userEmail,
-  };
+  // const noteToSave: Insert<"Note"> = {
+  //   cells,
+  //   name: fileName,
+  //   user_email: userEmail,
+  // };
 
-  const { data, error } = await supabase.from("Notebook").insert([noteBookToSave]).select();
+  //const { data, error } = await supabase.from("Notebook").insert([noteToSave]).select();
 
-  return Response.json({ data, error });
+  return Response.json({ testing: 123 });
 }
