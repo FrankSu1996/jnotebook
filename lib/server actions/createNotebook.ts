@@ -1,5 +1,3 @@
-"use server";
-
 import { Database, Insert } from "@/types/supabase";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { revalidatePath } from "next/cache";
@@ -7,6 +5,7 @@ import { cookies } from "next/headers";
 import { getServerSession } from "next-auth";
 
 export const createNotebook = async (formData: FormData) => {
+  "use server";
   const session = await getServerSession();
   if (session) {
     const cookieStore = cookies();

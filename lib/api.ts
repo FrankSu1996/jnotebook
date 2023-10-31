@@ -15,6 +15,7 @@ export const getSavedNotes = async (email: string) => {
 
 export const fetchSavedNotebooks = async () => {
   noStore();
+  await delay(1000);
   const session = await getServerSession();
   if (session) {
     const cookieStore = cookies();

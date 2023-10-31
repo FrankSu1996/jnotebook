@@ -17,9 +17,9 @@ import {
 
 export function NavbarMenu() {
   return (
-    <Menubar className="rounded-none border-b border-none px-2 lg:px-4 ml-10">
+    <Menubar className="rounded-none border-b border-none px-2 lg:px-4 ml-10 bg-nav">
       <MenubarMenu>
-        <MenubarTrigger className="relative text-base">File</MenubarTrigger>
+        <MenubarTrigger className="relative text-base w-full">File</MenubarTrigger>
         <MenubarContent>
           <MenubarItem>
             Save <MenubarShortcut>Ctrl + S</MenubarShortcut>

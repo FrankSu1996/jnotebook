@@ -4,13 +4,13 @@ import { FileTree } from "@/components/ui/Layout/file-tree";
 import { Terminal } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { createNotebook } from "@/lib/server actions/createNotebook";
-import { fetchSavedNotebooks } from "@/lib/api";
 import { Input } from "../input";
-import { CreateNotebookTooltip } from "./create-notebook-tooltip";
+import { CreateNotebookButton } from "./create-notebook-tooltip";
+import { Suspense } from "react";
+import { Spinner } from "./spinner";
 
 export async function Sidebar() {
   const session = await getServerSession();
-  const results = await fetchSavedNotebooks();
 
   return (
     <form action={createNotebook}>
@@ -20,11 +20,9 @@ export async function Sidebar() {
           <CardDescription>Double click on a note or use the context menu to open</CardDescription>
         </CardHeader>
         <CardContent className="h-[75%]">
-          <div className="flex mb-3 mt-4 justify-between">
-            <CreateNotebookTooltip />
-            <div className="ml-3">
-              <Input name="notebookName" type="text" defaultValue={"notebook Name"} />
-            </div>
+          <div className="flex w-full max-w-sm items-center space-x-2">
+            <Input type="email" placeholder="Email" />
+            <CreateNotebookButton />
           </div>
           {!session && (
             <Alert className="w-full">
@@ -32,8 +30,11 @@ export async function Sidebar() {
               <AlertDescription>You need to be logged in to see your notes.</AlertDescription>
             </Alert>
           )}
-          {session && <FileTree />}
-          {/* {results?.map((row) => <div key={row.name}>{row.name}</div>)} */}
+          {session && (
+            <Suspense fallback={<Spinner />}>
+              <FileTree />
+            </Suspense>
+          )}
         </CardContent>
       </Card>
     </form>
