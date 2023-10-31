@@ -13,19 +13,12 @@ export const getSavedNotes = async (email: string) => {
   return await supabase.from("Note").select("*").eq("user_email", email);
 };
 
-export const fetchSavedNotebooks = async () => {
-  noStore();
-  await delay(1000);
-  const session = await getServerSession();
-  if (session) {
-    const cookieStore = cookies();
-    const supabase = createServerComponentClient<Database>({ cookies: () => cookieStore });
-    const { data, error } = await supabase
-      .from("Notebooks")
-      .select("*")
-      .eq("user_email", session.user?.email!);
-    if (data) return data;
-  }
+export const fetchSavedNotebooks = async (email) => {
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient<Database>({ cookies: () => cookieStore });
+  const { data, error } = await supabase.from("Notebooks").select("*").eq("user_email", email);
+  revalidatePath("/");
+  return { data, error };
 };
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

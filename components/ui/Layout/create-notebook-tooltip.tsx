@@ -2,13 +2,16 @@
 import { FolderPlus } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@radix-ui/react-tooltip";
 import { Button } from "../button";
+import { useFormStatus } from "react-dom";
 
 export const CreateNotebookButton = () => {
+  const { pending } = useFormStatus();
+
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button type="submit" variant={"outline"} size={"default"} className="w-[4rem]">
+          <Button type="submit" variant={"outline"} size={"default"} className="w-[4rem]" disabled={pending}>
             <FolderPlus />
           </Button>
         </TooltipTrigger>

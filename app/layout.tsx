@@ -9,6 +9,7 @@ import { Navbar } from "@/components/ui/Layout/navbar";
 const inter = Inter({ subsets: ["latin"] });
 import { cn } from "@/lib/utils";
 import { Sidebar } from "@/components/ui/Layout/side-bar";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -35,6 +36,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </ThemeProvider>
           </ReduxProvider>
         </SessionProvider>
+        <Toaster />
       </body>
     </html>
   );

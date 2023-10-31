@@ -15,6 +15,7 @@ interface TreeDataItem {
 }
 
 type TreeProps = React.HTMLAttributes<HTMLDivElement> & {
+  data: TreeDataItem[] | TreeDataItem | undefined;
   initialSlelectedItemId?: string;
   onSelectChange?: (item: TreeDataItem | undefined) => void;
   expandAll?: boolean;
@@ -22,45 +23,8 @@ type TreeProps = React.HTMLAttributes<HTMLDivElement> & {
   itemIcon?: LucideIcon;
 };
 
-const data = [
-  {
-    id: "3",
-    name: "use state notes",
-    children: [
-      { id: "c1", name: "General" },
-      { id: "c2", name: "Random" },
-      { id: "c3", name: "Open Source Projects" },
-    ],
-  },
-  {
-    id: "4",
-    name: "use effect notes",
-    children: [
-      {
-        id: "3",
-        name: "use state notes",
-        children: [
-          { id: "c1", name: "General" },
-          { id: "c2", name: "Random" },
-          { id: "c3", name: "Open Source Projects" },
-        ],
-      },
-      {
-        id: "4",
-        name: "use effect notes",
-        children: [
-          { id: "c9", name: "General" },
-          { id: "c7", name: "Random" },
-          { id: "c4", name: "Open Source Projects" },
-        ],
-      },
-      { id: "c4", name: "Open Source Projects" },
-    ],
-  },
-];
-
 const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
-  ({ initialSlelectedItemId, onSelectChange, expandAll, folderIcon, itemIcon, className, ...props }, ref) => {
+  ({ data, initialSlelectedItemId, onSelectChange, expandAll, folderIcon, itemIcon, className, ...props }, ref) => {
     const [selectedItemId, setSelectedItemId] = React.useState<string | undefined>(initialSlelectedItemId);
 
     const handleSelectChange = React.useCallback(
@@ -80,7 +44,8 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
 
       const ids: string[] = [];
 
-      function walkTreeItems(items: TreeDataItem[] | TreeDataItem, targetId: string) {
+      function walkTreeItems(items: TreeDataItem[] | TreeDataItem | undefined, targetId: string) {
+        if (!items) return;
         if (items instanceof Array) {
           for (let i = 0; i < items.length; i++) {
             ids.push(items[i]!.id);
@@ -98,7 +63,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
 
       walkTreeItems(data, initialSlelectedItemId);
       return ids;
-    }, [initialSlelectedItemId, expandAll]);
+    }, [data, initialSlelectedItemId, expandAll]);
 
     const { ref: refRoot, width, height } = useResizeObserver();
 
@@ -130,7 +95,6 @@ type TreeItemProps = TreeProps & {
   expandedItemIds: string[];
   FolderIcon?: LucideIcon;
   ItemIcon?: LucideIcon;
-  data: TreeDataItem[] | TreeDataItem;
 };
 
 const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
@@ -175,7 +139,7 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
             ))
           ) : (
             <li>
-              <Leaf item={data} isSelected={selectedItemId === data.id} onClick={() => handleSelectChange(data)} Icon={ItemIcon} />
+              <Leaf item={data} isSelected={selectedItemId === data?.id} onClick={() => handleSelectChange(data)} Icon={ItemIcon} />
             </li>
           )}
         </ul>
@@ -189,7 +153,7 @@ TreeItem.displayName = "TreeItem";
 const Leaf = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & {
-    item: TreeDataItem;
+    item: TreeDataItem | undefined;
     isSelected?: boolean;
     Icon?: LucideIcon;
   }
@@ -206,9 +170,9 @@ const Leaf = React.forwardRef<
       )}
       {...props}
     >
-      {item.icon && <item.icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
-      {!item.icon && Icon && <Icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
-      <span className="flex-grow text-sm truncate">{item.name}</span>
+      {item?.icon && <item.icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
+      {!item?.icon && Icon && <Icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
+      <span className="flex-grow text-sm truncate">{item?.name}</span>
     </div>
   );
 });
