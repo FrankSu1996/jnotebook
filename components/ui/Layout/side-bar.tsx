@@ -4,13 +4,13 @@ import { FileTree } from "@/components/ui/Layout/file-tree";
 import { Terminal } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { createNotebook } from "@/lib/server actions/createNotebook";
-import { getSavedNotebooks } from "@/lib/api";
+import { fetchSavedNotebooks } from "@/lib/api";
 import { Input } from "../input";
 import { CreateNotebookTooltip } from "./create-notebook-tooltip";
 
 export async function Sidebar() {
   const session = await getServerSession();
-  const results = await getSavedNotebooks();
+  const results = await fetchSavedNotebooks();
 
   return (
     <form action={createNotebook}>

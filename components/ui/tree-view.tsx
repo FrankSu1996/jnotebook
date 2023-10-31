@@ -15,7 +15,6 @@ interface TreeDataItem {
 }
 
 type TreeProps = React.HTMLAttributes<HTMLDivElement> & {
-  data: TreeDataItem[] | TreeDataItem;
   initialSlelectedItemId?: string;
   onSelectChange?: (item: TreeDataItem | undefined) => void;
   expandAll?: boolean;
@@ -23,8 +22,45 @@ type TreeProps = React.HTMLAttributes<HTMLDivElement> & {
   itemIcon?: LucideIcon;
 };
 
+const data = [
+  {
+    id: "3",
+    name: "use state notes",
+    children: [
+      { id: "c1", name: "General" },
+      { id: "c2", name: "Random" },
+      { id: "c3", name: "Open Source Projects" },
+    ],
+  },
+  {
+    id: "4",
+    name: "use effect notes",
+    children: [
+      {
+        id: "3",
+        name: "use state notes",
+        children: [
+          { id: "c1", name: "General" },
+          { id: "c2", name: "Random" },
+          { id: "c3", name: "Open Source Projects" },
+        ],
+      },
+      {
+        id: "4",
+        name: "use effect notes",
+        children: [
+          { id: "c9", name: "General" },
+          { id: "c7", name: "Random" },
+          { id: "c4", name: "Open Source Projects" },
+        ],
+      },
+      { id: "c4", name: "Open Source Projects" },
+    ],
+  },
+];
+
 const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
-  ({ data, initialSlelectedItemId, onSelectChange, expandAll, folderIcon, itemIcon, className, ...props }, ref) => {
+  ({ initialSlelectedItemId, onSelectChange, expandAll, folderIcon, itemIcon, className, ...props }, ref) => {
     const [selectedItemId, setSelectedItemId] = React.useState<string | undefined>(initialSlelectedItemId);
 
     const handleSelectChange = React.useCallback(
@@ -62,7 +98,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
 
       walkTreeItems(data, initialSlelectedItemId);
       return ids;
-    }, [data, initialSlelectedItemId, expandAll]);
+    }, [initialSlelectedItemId, expandAll]);
 
     const { ref: refRoot, width, height } = useResizeObserver();
 
@@ -94,6 +130,7 @@ type TreeItemProps = TreeProps & {
   expandedItemIds: string[];
   FolderIcon?: LucideIcon;
   ItemIcon?: LucideIcon;
+  data: TreeDataItem[] | TreeDataItem;
 };
 
 const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(

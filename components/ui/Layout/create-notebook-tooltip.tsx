@@ -7,7 +7,7 @@ export const CreateNotebookTooltip = () => {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger asChild>
           <Button type="submit" variant={"ghost"} size={"default"} className="w-[4rem]">
             <FolderPlus />
           </Button>
