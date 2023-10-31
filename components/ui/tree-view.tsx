@@ -4,8 +4,11 @@ import React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import { BookOpenText, ChevronRight, Folder, Trash2, type LucideIcon } from "lucide-react";
 import useResizeObserver from "use-resize-observer";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
+import { Button } from "./button";
+import { ContextMenuItemIndicator } from "@radix-ui/react-context-menu";
 
 interface TreeDataItem {
   id: string;
@@ -19,12 +22,11 @@ type TreeProps = React.HTMLAttributes<HTMLDivElement> & {
   initialSlelectedItemId?: string;
   onSelectChange?: (item: TreeDataItem | undefined) => void;
   expandAll?: boolean;
-  folderIcon?: LucideIcon;
   itemIcon?: LucideIcon;
 };
 
 const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
-  ({ data, initialSlelectedItemId, onSelectChange, expandAll, folderIcon, itemIcon, className, ...props }, ref) => {
+  ({ data, initialSlelectedItemId, onSelectChange, expandAll, itemIcon, className, ...props }, ref) => {
     const [selectedItemId, setSelectedItemId] = React.useState<string | undefined>(initialSlelectedItemId);
 
     const handleSelectChange = React.useCallback(
@@ -77,7 +79,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
               selectedItemId={selectedItemId}
               handleSelectChange={handleSelectChange}
               expandedItemIds={expandedItemIds}
-              FolderIcon={folderIcon}
+              FolderIcon={BookOpenText}
               ItemIcon={itemIcon}
               {...props}
             />
@@ -106,32 +108,46 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
             data.map((item) => (
               <li key={item.id}>
                 {item.children ? (
-                  <AccordionPrimitive.Root type="multiple" defaultValue={expandedItemIds}>
-                    <AccordionPrimitive.Item value={item.id}>
-                      <AccordionTrigger
-                        className={cn(
-                          "px-2 hover:before:opacity-100 before:absolute before:left-0 before:w-full before:opacity-0 before:bg-muted/80 before:h-[1.75rem] before:-z-10",
-                          selectedItemId === item.id &&
-                            "before:opacity-100 before:bg-accent text-accent-foreground before:border-l-2 before:border-l-accent-foreground/50 dark:before:border-0",
-                        )}
-                        onClick={() => handleSelectChange(item)}
-                      >
-                        {item.icon && <item.icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
-                        {!item.icon && FolderIcon && <FolderIcon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
-                        <span className="text-sm truncate">{item.name}</span>
-                      </AccordionTrigger>
-                      <AccordionContent className="pl-6">
-                        <TreeItem
-                          data={item.children ? item.children : item}
-                          selectedItemId={selectedItemId}
-                          handleSelectChange={handleSelectChange}
-                          expandedItemIds={expandedItemIds}
-                          FolderIcon={FolderIcon}
-                          ItemIcon={ItemIcon}
-                        />
-                      </AccordionContent>
-                    </AccordionPrimitive.Item>
-                  </AccordionPrimitive.Root>
+                  <ContextMenu>
+                    <ContextMenuTrigger>
+                      <AccordionPrimitive.Root type="multiple" defaultValue={expandedItemIds}>
+                        <AccordionPrimitive.Item value={item.id}>
+                          <AccordionTrigger
+                            className={cn(
+                              "px-2 hover:before:opacity-100 before:absolute before:left-0 before:w-full before:opacity-0 before:bg-muted/80 before:h-[1.75rem] before:-z-10",
+                              selectedItemId === item.id &&
+                                "before:opacity-100 before:bg-accent text-accent-foreground before:border-l-2 before:border-l-accent-foreground/50 dark:before:border-0",
+                            )}
+                            onClick={() => handleSelectChange(item)}
+                          >
+                            {item.icon && <item.icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
+                            {!item.icon && FolderIcon && (
+                              <FolderIcon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/75" aria-hidden="true" />
+                            )}
+                            <span className="text-sm truncate mr-7">{item.name}</span>
+                            <div className="absolute right-10 opacity-50 hover:opacity-100">
+                              <Trash2 size={15}></Trash2>
+                            </div>
+                          </AccordionTrigger>
+                          <AccordionContent className="pl-6">
+                            <TreeItem
+                              data={item.children ? item.children : item}
+                              selectedItemId={selectedItemId}
+                              handleSelectChange={handleSelectChange}
+                              expandedItemIds={expandedItemIds}
+                              FolderIcon={FolderIcon}
+                              ItemIcon={ItemIcon}
+                            />
+                          </AccordionContent>
+                        </AccordionPrimitive.Item>
+                      </AccordionPrimitive.Root>
+                    </ContextMenuTrigger>
+                    <ContextMenuContent className="w-64">
+                      <div className="flex align-middle">
+                        <ContextMenuItem inset>Delete</ContextMenuItem>
+                      </div>
+                    </ContextMenuContent>
+                  </ContextMenu>
                 ) : (
                   <Leaf item={item} isSelected={selectedItemId === item.id} onClick={() => handleSelectChange(item)} Icon={ItemIcon} />
                 )}

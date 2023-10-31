@@ -16,12 +16,21 @@ export const CreateNotebookForm = () => {
         const notebookName = formData.get("notebookName");
         ref.current?.reset();
         const { error } = await createNotebook(formData);
-        if (error?.code === "23505")
-          toast({
-            variant: "destructive",
-            title: "Error creating notebook",
-            description: "There is already a saved notebook named " + notebookName,
-          });
+        if (error) {
+          if (error?.code === "23505")
+            toast({
+              variant: "destructive",
+              title: "Error creating notebook",
+              description: "There is already a saved notebook named " + notebookName,
+            });
+          else {
+            toast({
+              variant: "destructive",
+              title: "Error creating notebook",
+              description: "Something went wrong...",
+            });
+          }
+        }
       }}
       className="flex w-full items-center space-x-2"
     >

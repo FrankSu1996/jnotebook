@@ -1,5 +1,5 @@
 "use client";
-import { FolderPlus } from "lucide-react";
+import { BookOpenText } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@radix-ui/react-tooltip";
 import { Button } from "../button";
 import { useFormStatus } from "react-dom";
@@ -12,7 +12,7 @@ export const CreateNotebookButton = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button type="submit" variant={"outline"} size={"default"} className="w-[4rem]" disabled={pending}>
-            <FolderPlus />
+            <BookOpenText />
           </Button>
         </TooltipTrigger>
         <TooltipContent align="center">
