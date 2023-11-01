@@ -11,7 +11,7 @@ export async function Sidebar() {
   const session = await getServerSession();
 
   return (
-    <Card className="mr-[5%] hidden lg:block h-full w-[400px]">
+    <Card className="mr-[5%] hidden lg:block h-full z-50">
       <CardHeader>
         <CardTitle>Saved Notes</CardTitle>
         <CardDescription>Double click on a note or use the context menu to open</CardDescription>

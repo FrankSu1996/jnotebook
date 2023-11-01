@@ -1,14 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useTransition } from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { BookOpenText, ChevronRight, Folder, Trash2, type LucideIcon } from "lucide-react";
 import useResizeObserver from "use-resize-observer";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
-import { Button } from "./button";
-import { ContextMenuItemIndicator } from "@radix-ui/react-context-menu";
+import { deleteNotebookServerAction } from "@/lib/server actions/deleteNote";
 
 interface TreeDataItem {
   id: string;
@@ -101,8 +100,7 @@ type TreeItemProps = TreeProps & {
 
 const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
   ({ className, data, selectedItemId, handleSelectChange, expandedItemIds, FolderIcon, ItemIcon, ...props }, ref) => {
-    
-    const handleDelete = () => {};
+    const [isPending, startTransition] = useTransition();
 
     return (
       <div ref={ref} role="tree" className={className} {...props}>
@@ -129,7 +127,15 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
                             )}
                             <span className="text-sm truncate mr-7">{item.name}</span>
                             <div className="absolute right-10 opacity-30 hover:opacity-100">
-                              <Trash2 size={15} onClick={handleDelete}></Trash2>
+                              <Trash2
+                                size={15}
+                                onClick={(e) =>
+                                  startTransition(() => {
+                                    e.preventDefault();
+                                    deleteNotebookServerAction(item.name);
+                                  })
+                                }
+                              ></Trash2>
                             </div>
                           </AccordionTrigger>
                           <AccordionContent className="pl-6">

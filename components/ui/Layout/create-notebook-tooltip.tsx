@@ -2,7 +2,7 @@
 import { BookOpenText } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@radix-ui/react-tooltip";
 import { Button } from "../button";
-import { useFormStatus } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 
 export const CreateNotebookButton = () => {
   const { pending } = useFormStatus();
@@ -16,7 +16,7 @@ export const CreateNotebookButton = () => {
           </Button>
         </TooltipTrigger>
         <TooltipContent align="center">
-          <p className="mr-6 pb-2 ">Create notebook</p>
+          <p className="mr-14 pb-2 ">Create notebook</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

@@ -11,15 +11,8 @@ export const deleteNotebookServerAction = async (notebookName: string) => {
     const cookieStore = cookies();
     const supabase = createServerComponentClient<Database>({ cookies: () => cookieStore });
     if (notebookName) {
-      const { data, error } = await supabase.from("Notebooks").delete().eq("name", notebookName).select("*");
+      await supabase.from("Notebooks").delete().eq("name", notebookName).select("*");
       revalidatePath("/");
-      return { data, error };
     }
-
-    revalidatePath("/");
   }
-  return {
-    data: null,
-    error: null,
-  };
 };
