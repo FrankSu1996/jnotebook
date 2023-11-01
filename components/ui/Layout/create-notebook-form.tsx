@@ -1,5 +1,5 @@
 "use client";
-import { createNotebook } from "@/lib/server actions/createNotebook";
+import { createNotebookServerAction } from "@/lib/server actions/createNotebook";
 import { Input } from "../input";
 import { CreateNotebookButton } from "./create-notebook-tooltip";
 import { useRef } from "react";
@@ -15,7 +15,7 @@ export const CreateNotebookForm = () => {
       action={async (formData: FormData) => {
         const notebookName = formData.get("notebookName");
         ref.current?.reset();
-        const { error } = await createNotebook(formData);
+        const { error } = await createNotebookServerAction(formData);
         if (error) {
           if (error?.code === "23505")
             toast({

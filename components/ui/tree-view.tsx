@@ -101,6 +101,9 @@ type TreeItemProps = TreeProps & {
 
 const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
   ({ className, data, selectedItemId, handleSelectChange, expandedItemIds, FolderIcon, ItemIcon, ...props }, ref) => {
+    
+    const handleDelete = () => {};
+
     return (
       <div ref={ref} role="tree" className={className} {...props}>
         <ul>
@@ -125,8 +128,8 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
                               <FolderIcon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/75" aria-hidden="true" />
                             )}
                             <span className="text-sm truncate mr-7">{item.name}</span>
-                            <div className="absolute right-10 opacity-50 hover:opacity-100">
-                              <Trash2 size={15}></Trash2>
+                            <div className="absolute right-10 opacity-30 hover:opacity-100">
+                              <Trash2 size={15} onClick={handleDelete}></Trash2>
                             </div>
                           </AccordionTrigger>
                           <AccordionContent className="pl-6">

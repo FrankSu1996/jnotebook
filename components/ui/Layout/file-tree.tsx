@@ -2,7 +2,7 @@ import { Tree } from "@/components/ui/tree-view";
 import { fetchSavedNotebooks } from "@/lib/api";
 import { getServerSession } from "next-auth";
 
-export const FileTree = async () => {
+export const NotebookTree = async () => {
   const session = await getServerSession();
   const { data: notebooks, error } = await fetchSavedNotebooks(session?.user?.email);
   const treeData = notebooks?.map((notebook) => {

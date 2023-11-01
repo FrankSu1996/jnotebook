@@ -1,11 +1,8 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { FileTree } from "@/components/ui/Layout/file-tree";
+import { NotebookTree } from "@/components/ui/Layout/file-tree";
 import { Terminal } from "lucide-react";
 import { getServerSession } from "next-auth";
-import { createNotebook } from "@/lib/server actions/createNotebook";
-import { Input } from "../input";
-import { CreateNotebookButton } from "./create-notebook-tooltip";
 import { Suspense } from "react";
 import { Spinner } from "./spinner";
 import { CreateNotebookForm } from "./create-notebook-form";
@@ -30,7 +27,7 @@ export async function Sidebar() {
 
         {session && (
           <Suspense fallback={<Spinner />}>
-            <FileTree />
+            <NotebookTree />
           </Suspense>
         )}
       </CardContent>
