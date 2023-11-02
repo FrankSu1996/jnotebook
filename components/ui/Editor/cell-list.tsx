@@ -6,7 +6,7 @@ import { CellListItem } from "./cell-list-item";
 import { AddCell } from "../add-cell";
 import { Fragment, useState } from "react";
 import { useEffect } from "react";
-import { selectAnyCursorInsideCodeEditor, selectCursorInsideCodeEditor, selectIsAnyDialogOpen } from "@/app/Redux/Slices/uiSlice";
+import { selectAnyCursorInsideCodeEditor, selectIsAnyDialogOpen } from "@/app/Redux/Slices/uiSlice";
 
 export const CellList: React.FC = () => {
   const order = useSelector(selectOrder);

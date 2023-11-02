@@ -14,10 +14,14 @@ import { Dialog, DialogHeader } from "../dialog";
 import { DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "../button";
 import { Icons } from "../icons";
+import { useDispatch } from "react-redux";
+import { setIsDialogOpen } from "@/app/Redux/Slices/uiSlice";
 
 export const SignedOutNavbarDropdown = () => {
+  const dispatch = useDispatch();
+
   return (
-    <Dialog>
+    <Dialog onOpenChange={(open) => dispatch(setIsDialogOpen(open))}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Avatar className="ml-3 cursor-pointer">

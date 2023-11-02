@@ -1,6 +1,4 @@
 import { CellList } from "@/components/ui/Editor/cell-list";
-import { LoginDialog } from "@/components/ui/Authentication/login-dialog";
-import { Input } from "@/components/ui/input";
 
 const data = [
   { id: "1", name: "Unread" },

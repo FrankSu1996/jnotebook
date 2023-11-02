@@ -4,10 +4,7 @@ import { cellSlice } from "./cellSlice";
 import { createSelector } from "@reduxjs/toolkit";
 
 export interface UiState {
-  dialogs: {
-    showLoginDialog: boolean;
-    showSaveDialog: boolean;
-  };
+  isDialogOpen: boolean;
   cursorInsideCodeEditor: {
     [key: string]: boolean;
   };
@@ -17,20 +14,17 @@ export interface UiState {
 }
 
 const initialState: UiState = {
-  dialogs: {
-    showLoginDialog: false,
-    showSaveDialog: false,
-  },
   cursorInsideCodeEditor: {},
   codeCellWidth: {},
+  isDialogOpen: false,
 };
 
 export const uiSlice = createSlice({
   name: "ui",
   initialState,
   reducers: {
-    setShowLoginDialog: (state, action) => {
-      state.dialogs.showLoginDialog = action.payload;
+    setIsDialogOpen: (state, action) => {
+      state.isDialogOpen = action.payload;
     },
     setCursorInsideCodeEditor: (
       state,
@@ -64,11 +58,9 @@ export const uiSlice = createSlice({
   },
 });
 
-export const { setShowLoginDialog, setCursorInsideCodeEditor, setCodeCellWidth } = uiSlice.actions;
+export const { setCursorInsideCodeEditor, setCodeCellWidth, setIsDialogOpen } = uiSlice.actions;
 
 export default uiSlice.reducer;
-
-export const selectShowLoginDialog = (state: RootState) => state.ui.dialogs.showLoginDialog;
 export const selectCursorInsideCodeEditor = createSelector(
   // Input selectors: Get parts of the state you're interested in
   (state: RootState, cellId) => state.ui.cursorInsideCodeEditor[cellId],
@@ -76,9 +68,7 @@ export const selectCursorInsideCodeEditor = createSelector(
   // Result function: Return whatever you want based on the input selectors
   (cursorInsideCodeEditor) => cursorInsideCodeEditor,
 );
-export const selectIsAnyDialogOpen = (state: RootState) => {
-  return Object.values(state.ui.dialogs).some((value) => value === true);
-};
+export const selectIsAnyDialogOpen = (state: RootState) => state.ui.isDialogOpen;
 export const selectAnyCursorInsideCodeEditor = (state: RootState) => {
   return Object.values(state.ui.cursorInsideCodeEditor).some((value) => value);
 };
