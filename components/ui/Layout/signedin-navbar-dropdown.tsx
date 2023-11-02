@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { LogOut, Settings, UserCircle2 } from "lucide-react";
 
 export const SignedInNavbarDropdown = () => {
@@ -28,7 +28,7 @@ export const SignedInNavbarDropdown = () => {
       <DropdownMenuContent className="mr-2">
         <DropdownMenuLabel>{"Welcome, " + session?.user?.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => signOut()}>
           <LogOut className="mr-2" />
           <div>Logout</div>
         </DropdownMenuItem>

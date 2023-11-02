@@ -9,21 +9,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { signIn } from "next-auth/react";
-import { LogOut, Settings, UserCircle2 } from "lucide-react";
+import { LogIn, LogOut, Settings, UserCircle2 } from "lucide-react";
 import { Dialog, DialogHeader } from "../dialog";
 import { DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "../button";
 import { Icons } from "../icons";
-import { useState } from "react";
 
 export const SignedOutNavbarDropdown = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const handleSignIn = async (provider) => {
-    setIsLoading(true);
-    await signIn(provider);
-    setIsLoading(false);
-  };
-
   return (
     <Dialog>
       <DropdownMenu>
@@ -40,8 +32,8 @@ export const SignedOutNavbarDropdown = () => {
           <DropdownMenuSeparator />
           <DialogTrigger asChild>
             <DropdownMenuItem>
-              <LogOut className="mr-2" />
-              <div>Logout</div>
+              <LogIn className="mr-2" />
+              <div>Login</div>
             </DropdownMenuItem>
           </DialogTrigger>
           <DropdownMenuSeparator />
@@ -57,11 +49,11 @@ export const SignedOutNavbarDropdown = () => {
           <DialogDescription>Choose from one of the following authentication methods to get started.</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <Button variant="outline" type="button" disabled={isLoading} onClick={() => handleSignIn("github")}>
-            {isLoading ? <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> : <Icons.gitHub className="mr-2 h-4 w-4" />} Github
+          <Button variant="outline" type="button" onClick={() => signIn("github")}>
+            <Icons.gitHub className="mr-2 h-4 w-4" /> Github
           </Button>
-          <Button variant="outline" type="button" disabled={isLoading} onClick={() => handleSignIn("google")}>
-            {isLoading ? <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> : <Icons.google className="mr-2 h-4 w-4" />} Google
+          <Button variant="outline" type="button" onClick={() => signIn("google")}>
+            <Icons.google className="mr-2 h-4 w-4" /> Google
           </Button>
         </div>
       </DialogContent>
