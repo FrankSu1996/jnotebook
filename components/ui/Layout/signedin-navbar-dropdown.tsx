@@ -8,29 +8,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { signOut, useSession } from "next-auth/react";
-import { LogIn, LogOut, Settings, UserCircle2 } from "lucide-react";
-import { useDispatch } from "react-redux";
-import { setShowLoginDialog } from "@/app/Redux/Slices/uiSlice";
+import { useSession } from "next-auth/react";
+import { LogOut, Settings, UserCircle2 } from "lucide-react";
 
-export const NavbarDropdown = () => {
+export const SignedInNavbarDropdown = () => {
   const { data: session } = useSession();
-  const dispatch = useDispatch();
   const imageUrl = session?.user?.image;
-  const dropDownLabel = session ? "Welcome, " + session.user?.name : "Not logged in.";
-  const loginDropdownMenuItem = (
-    <DropdownMenuItem onClick={() => dispatch(setShowLoginDialog(true))}>
-      <LogIn className="mr-2" />
-      <div>Login</div>
-    </DropdownMenuItem>
-  );
-
-  const logoutDropdownMenuItem = (
-    <DropdownMenuItem onClick={() => signOut()}>
-      <LogOut className="mr-2" />
-      <div>Logout</div>
-    </DropdownMenuItem>
-  );
 
   return (
     <DropdownMenu>
@@ -43,9 +26,12 @@ export const NavbarDropdown = () => {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mr-2">
-        <DropdownMenuLabel>{dropDownLabel}</DropdownMenuLabel>
+        <DropdownMenuLabel>{"Welcome, " + session?.user?.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {session ? logoutDropdownMenuItem : loginDropdownMenuItem}
+        <DropdownMenuItem>
+          <LogOut className="mr-2" />
+          <div>Logout</div>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem disabled={!session}>
           <Settings className="mr-2" />

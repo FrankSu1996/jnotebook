@@ -57,7 +57,6 @@ export default function Page() {
   return (
     <div className="flex h-[90vh]">
       <div className="flex-1">
-        <LoginDialog />
         <CellList />
       </div>
     </div>
