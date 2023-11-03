@@ -37,9 +37,11 @@ export const CreateNotebookForm = () => {
       className="flex w-full items-center space-x-2"
     >
       <Input type="text" name="notebookName" />
-      <Button variant={"outline"} size={"default"} className="w-[4rem]">
-        <Plus />
-      </Button>
+      <DialogClose>
+        <Button variant={"outline"} size={"default"} className="w-[4rem]">
+          <Plus />
+        </Button>
+      </DialogClose>
     </form>
   );
 };
