@@ -2,16 +2,13 @@
 import { BookOpenText } from "lucide-react";
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@radix-ui/react-tooltip";
 import { Button } from "../button";
-import { useFormState, useFormStatus } from "react-dom";
 
 export const CreateNotebookButton = () => {
-  const { pending } = useFormStatus();
-
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button type="submit" variant={"outline"} size={"default"} className="w-[4rem]" disabled={pending}>
+          <Button variant={"outline"} size={"default"} className="w-[4rem]">
             <BookOpenText />
           </Button>
         </TooltipTrigger>

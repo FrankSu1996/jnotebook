@@ -5,6 +5,9 @@ import { Terminal } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { Suspense } from "react";
 import { Spinner } from "./spinner";
+import { Input } from "../input";
+import { CreateNotebookButton } from "./create-notebook-tooltip";
+import { DialogContent, DialogDescription, DialogTitle, DialogTrigger, Dialog, DialogHeader } from "@/components/ui/dialog";
 import { CreateNotebookForm } from "./create-notebook-form";
 
 export async function Sidebar() {
@@ -23,8 +26,23 @@ export async function Sidebar() {
             <AlertDescription>You need to be logged in to see your notes.</AlertDescription>
           </Alert>
         )}
-        {session && <CreateNotebookForm />}
-
+        {session && (
+          <div className="flex w-full items-center space-x-2">
+            <Input type="text" placeholder="Search for a note" name="notebookName" />
+            <Dialog>
+              <DialogTrigger>
+                <CreateNotebookButton />
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Create Notebook</DialogTitle>
+                  <DialogDescription>Choose a name for your new notebook</DialogDescription>
+                </DialogHeader>
+                <CreateNotebookForm />
+              </DialogContent>
+            </Dialog>
+          </div>
+        )}
         {session && (
           <Suspense fallback={<Spinner />}>
             <NotebookTree />

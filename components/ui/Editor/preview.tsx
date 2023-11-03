@@ -41,14 +41,14 @@ export const Preview: React.FC<PreviewProps> = ({ code, error }) => {
     if (iframeRef.current) {
       iframeRef.current.srcdoc = html;
       setTimeout(() => {
-        iframeRef.current.contentWindow.postMessage(code, "*");
+        iframeRef.current.contentWindow?.postMessage(code, "*");
       }, 50);
     }
   }, [code]);
 
   return (
     <div className="iframe-wrapper">
-      <iframe title="code preview" srcDoc={html} sandbox="allow-scripts allow-same-origin" ref={iframeRef} />
+      <iframe title="code preview" srcDoc={html} sandbox="allow-scripts" ref={iframeRef} />
       {error ? <div className="absolute top-2 left-2 text-red-700">{error}</div> : null}
     </div>
   );

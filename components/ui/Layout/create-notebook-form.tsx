@@ -1,9 +1,11 @@
 "use client";
 import { createNotebookServerAction } from "@/lib/server actions/createNotebook";
 import { Input } from "../input";
-import { CreateNotebookButton } from "./create-notebook-tooltip";
 import { useRef } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { Button } from "../button";
+import { Plus } from "lucide-react";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 export const CreateNotebookForm = () => {
   const ref = useRef<HTMLFormElement>(null);
@@ -34,8 +36,10 @@ export const CreateNotebookForm = () => {
       }}
       className="flex w-full items-center space-x-2"
     >
-      <Input type="text" placeholder="enter Notebook name" name="notebookName" />
-      <CreateNotebookButton />
+      <Input type="text" name="notebookName" />
+      <Button variant={"outline"} size={"default"} className="w-[4rem]">
+        <Plus />
+      </Button>
     </form>
   );
 };
