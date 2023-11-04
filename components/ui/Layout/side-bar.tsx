@@ -7,7 +7,7 @@ import { Suspense } from "react";
 import { Spinner } from "./spinner";
 import { Input } from "../input";
 import { CreateNotebookButton } from "./create-notebook-tooltip";
-import { CreateNotebookDialog } from "./create-notebook-dialog";
+import { CreateNotebookDialog } from "@/components/ui/Dialogs/create-notebook-dialog";
 
 export async function Sidebar() {
   const session = await getServerSession();

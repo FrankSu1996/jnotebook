@@ -4,11 +4,14 @@ import React, { useTransition } from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { BookOpenText, ChevronRight, Folder, Trash2, type LucideIcon } from "lucide-react";
+import { BookOpenText, ChevronRight, Folder, Trash2, type LucideIcon, FilePlus2 } from "lucide-react";
 import useResizeObserver from "use-resize-observer";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { deleteNotebookServerAction } from "@/lib/server actions/deleteNote";
-import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@radix-ui/react-tooltip";
+import { Tooltip } from "./tooltip";
+import { CreateNoteDialog } from "./Dialogs/create-note-dialog";
+import { useDispatch } from "react-redux";
+import { setDialog } from "@/app/Redux/Slices/uiSlice";
 
 interface TreeDataItem {
   id: string;
@@ -73,6 +76,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
       <div ref={refRoot} className={cn("overflow-hidden", className)}>
         <ScrollArea style={{ width, height }}>
           <div className="relative p-2">
+            <CreateNoteDialog />
             <TreeItem
               data={data}
               ref={ref}
@@ -101,6 +105,7 @@ type TreeItemProps = TreeProps & {
 
 const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
   ({ className, data, selectedItemId, handleSelectChange, expandedItemIds, FolderIcon, ItemIcon, ...props }, ref) => {
+    const dispatch = useDispatch();
     const [isPending, startTransition] = useTransition();
 
     return (
@@ -116,9 +121,9 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
                         <AccordionPrimitive.Item value={item.id}>
                           <AccordionTrigger
                             className={cn(
-                              "px-2 hover:before:opacity-100 before:absolute before:left-0 before:w-full before:opacity-0 before:bg-muted/80 before:h-[1.75rem] before:-z-10",
-                              selectedItemId === item.id &&
-                                "before:opacity-100 before:bg-accent text-accent-foreground before:border-l-2 before:border-l-accent-foreground/50 dark:before:border-0",
+                              "px-2 hover:before:opacity-100 before:absolute before:left-0 before:w-full before:opacity-0 before:bg-muted/80 before:h-[2rem] before:-z-10",
+                              // selectedItemId === item.id &&
+                              //   "before:opacity-100 before:bg-accent text-accent-foreground before:border-l-2 before:border-l-accent-foreground/50 dark:before:border-0",
                             )}
                             onClick={() => handleSelectChange(item)}
                           >
@@ -127,25 +132,31 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
                               <FolderIcon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/75" aria-hidden="true" />
                             )}
                             <span className="text-sm truncate mr-7">{item.name}</span>
-                            <div className="absolute right-10 opacity-30 hover:opacity-100">
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Trash2
-                                      size={15}
-                                      onClick={(e) =>
-                                        startTransition(() => {
-                                          e.preventDefault();
-                                          deleteNotebookServerAction(item.name);
-                                        })
-                                      }
-                                    />
-                                  </TooltipTrigger>
-                                  <TooltipContent className="mt-3">
-                                    <p>Delete Notebook</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
+                            <div className="absolute right-10">
+                              <div className="flex">
+                                <FilePlus2
+                                  className="opacity-30 hover:opacity-100 mr-2"
+                                  data-tooltip-id="create-note-tooltip"
+                                  size={20}
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    dispatch(setDialog({ open: true, dialogType: "create-note" }));
+                                  }}
+                                />
+                                <Trash2
+                                  className="opacity-30 hover:opacity-100"
+                                  data-tooltip-id="delete-notebook-tooltip"
+                                  size={20}
+                                  onClick={(e) =>
+                                    startTransition(() => {
+                                      e.preventDefault();
+                                      deleteNotebookServerAction(item.name);
+                                    })
+                                  }
+                                />
+                                <Tooltip id="create-note-tooltip" content="Create Note" />
+                                <Tooltip id="delete-notebook-tooltip" content="Delete Notebook" />
+                              </div>
                             </div>
                           </AccordionTrigger>
                           <AccordionContent className="pl-6">

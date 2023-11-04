@@ -3,7 +3,7 @@ import { RootState } from "../store";
 import { cellSlice } from "./cellSlice";
 import { createSelector } from "@reduxjs/toolkit";
 
-type DialogType = "create-notebook" | null
+type DialogType = "create-notebook" | "create-note" | null
 
 export interface UiState {
   isDialogOpen: boolean;
@@ -86,4 +86,4 @@ export const selectAnyCursorInsideCodeEditor = (state: RootState) => {
   return Object.values(state.ui.cursorInsideCodeEditor).some((value) => value);
 };
 export const selectCodeCellWidth = (cellId) => (state: RootState) => state.ui.codeCellWidth[cellId];
-export const selectDialogOpen = (state: RootState) => state.ui.dialog.open;
+export const selectDialog = (state: RootState) => state.ui.dialog;

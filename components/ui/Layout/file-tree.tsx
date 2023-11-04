@@ -12,5 +12,5 @@ export const NotebookTree = async () => {
       children: [],
     };
   });
-  return <Tree data={treeData} className="w-full h-full relative z-50" initialSlelectedItemId="3" />;
+  return <Tree data={treeData} className="w-full h-full relative z-50" />;
 };

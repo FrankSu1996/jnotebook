@@ -7,11 +7,11 @@ import { Button } from "../button";
 import { AlertCircle, Plus, Terminal } from "lucide-react";
 import { DialogContent, DialogDescription, DialogTitle, Dialog, DialogHeader } from "@/components/ui/dialog";
 import { useDispatch, useSelector } from "react-redux";
-import { selectDialogOpen, setDialog, setIsDialogOpen } from "@/app/Redux/Slices/uiSlice";
+import { selectDialog, setDialog, setIsDialogOpen } from "@/app/Redux/Slices/uiSlice";
 import { Alert, AlertDescription, AlertTitle } from "../alert";
 
 export const CreateNotebookDialog = () => {
-  const open = useSelector(selectDialogOpen);
+  const dialog = useSelector(selectDialog);
   const dispatch = useDispatch();
   const ref = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
@@ -23,7 +23,7 @@ export const CreateNotebookDialog = () => {
         dispatch(setIsDialogOpen(open));
         dispatch(setDialog({ open: false, dialogType: "create-notebook" }));
       }}
-      open={open}
+      open={dialog.open && dialog.dialogType === "create-notebook"}
     >
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
