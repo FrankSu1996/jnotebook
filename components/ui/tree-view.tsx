@@ -69,6 +69,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
       walkTreeItems(data, initialSlelectedItemId);
       return ids;
     }, [data, initialSlelectedItemId, expandAll]);
+    console.log(expandedItemIds);
 
     const { ref: refRoot, width, height } = useResizeObserver();
 
@@ -121,8 +122,8 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
                         <AccordionTrigger
                           className={cn(
                             "px-2 hover:before:opacity-100 before:absolute before:left-0 before:w-full before:opacity-0 before:bg-muted/80 before:h-[2rem] before:-z-10",
-                            // selectedItemId === item.id &&
-                            //   "before:opacity-100 before:bg-accent text-accent-foreground before:border-l-2 before:border-l-accent-foreground/50 dark:before:border-0",
+                            selectedItemId === item.id &&
+                              "before:opacity-100 before:bg-accent text-accent-foreground before:border-l-2 before:border-l-accent-foreground/50 dark:before:border-0",
                           )}
                           onClick={() => handleSelectChange(item)}
                         >

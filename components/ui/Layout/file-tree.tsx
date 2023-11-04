@@ -1,4 +1,4 @@
-import { Tree } from "@/components/ui/tree-view";
+import { Tree, TreeDataItem } from "@/components/ui/tree-view";
 import { fetchSavedNotebooks, fetchSavedNotes } from "@/lib/api";
 import { getServerSession } from "next-auth";
 import { Database, TableRow } from "@/types/supabase";
@@ -15,7 +15,7 @@ export const NotebookTree = async () => {
     notes = fetchNotesResult.value;
   }
 
-  const treeData = notebooks?.map((notebook) => {
+  const treeData: TreeDataItem = notebooks?.map((notebook) => {
     const notebookId = notebook.id.toString();
 
     return {
@@ -34,5 +34,5 @@ export const NotebookTree = async () => {
         }),
     };
   });
-  return <Tree data={treeData} className="w-full h-full relative z-50" />;
+  return <Tree data={treeData} className="w-full h-full relative z-50" initialSlelectedItemId={treeData[0].id} expandAll={true} />;
 };
