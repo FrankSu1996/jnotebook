@@ -4,14 +4,14 @@ import React, { useEffect, useState, useTransition } from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { BookOpenText, ChevronRight, Folder, Trash2, type LucideIcon, FilePlus2 } from "lucide-react";
+import { BookOpenText, ChevronRight, Folder, Trash2, type LucideIcon, FilePlus2, FileSignature } from "lucide-react";
 import useResizeObserver from "use-resize-observer";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { deleteNotebookServerAction } from "@/lib/server actions/deleteNote";
 import { Tooltip } from "./tooltip";
 import { CreateNoteDialog } from "./Dialogs/create-note-dialog";
 import { useDispatch } from "react-redux";
-import { setDialog } from "@/app/Redux/Slices/uiSlice";
+import { setCreateNoteDialogNotebookId, setDialog } from "@/app/Redux/Slices/uiSlice";
 
 interface TreeDataItem {
   id: string;
@@ -83,7 +83,7 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
               handleSelectChange={handleSelectChange}
               expandedItemIds={expandedItemIds}
               FolderIcon={BookOpenText}
-              ItemIcon={itemIcon}
+              ItemIcon={FileSignature}
               {...props}
             />
           </div>
@@ -106,83 +106,69 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
   ({ className, data, selectedItemId, handleSelectChange, expandedItemIds, FolderIcon, ItemIcon, ...props }, ref) => {
     const dispatch = useDispatch();
     const [isPending, startTransition] = useTransition();
-    const [selectedNotebookId, setSelectedNotebookId] = useState<string | null>(null);
 
     return (
       <div ref={ref} role="tree" className={className} {...props}>
-        <CreateNoteDialog notebookId={selectedNotebookId} />
+        <CreateNoteDialog />
         <ul>
           {data instanceof Array ? (
             data.map((item) => {
               return (
                 <li key={item.id}>
                   {item.children ? (
-                    <ContextMenu>
-                      <ContextMenuTrigger>
-                        <AccordionPrimitive.Root type="multiple" defaultValue={expandedItemIds}>
-                          <AccordionPrimitive.Item value={item.id}>
-                            <AccordionTrigger
-                              className={cn(
-                                "px-2 hover:before:opacity-100 before:absolute before:left-0 before:w-full before:opacity-0 before:bg-muted/80 before:h-[2rem] before:-z-10",
-                                // selectedItemId === item.id &&
-                                //   "before:opacity-100 before:bg-accent text-accent-foreground before:border-l-2 before:border-l-accent-foreground/50 dark:before:border-0",
-                              )}
-                              onClick={() => handleSelectChange(item)}
-                            >
-                              {item.icon && <item.icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
-                              {!item.icon && FolderIcon && (
-                                <FolderIcon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/75" aria-hidden="true" />
-                              )}
-                              <span className="text-sm truncate mr-7">{item.name}</span>
-                              <div className="absolute right-10">
-                                <div className="flex">
-                                  <FilePlus2
-                                    className="opacity-30 hover:opacity-100 mr-2"
-                                    data-tooltip-id="create-note-tooltip"
-                                    size={20}
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      setSelectedNotebookId(item.id);
-                                      dispatch(setDialog({ open: true, dialogType: "create-note" }));
-                                    }}
-                                  />
-                                  <Trash2
-                                    className="opacity-30 hover:opacity-100"
-                                    data-tooltip-id="delete-notebook-tooltip"
-                                    size={20}
-                                    onClick={(e) =>
-                                      startTransition(() => {
-                                        e.preventDefault();
-                                        deleteNotebookServerAction(item.name);
-                                      })
-                                    }
-                                  />
-                                  <Tooltip id="create-note-tooltip" content="Create Note" />
-                                  <Tooltip id="delete-notebook-tooltip" content="Delete Notebook" />
-                                </div>
-                              </div>
-                            </AccordionTrigger>
-                            <AccordionContent className="pl-6">
-                              <TreeItem
-                                data={item.children ? item.children : item}
-                                selectedItemId={selectedItemId}
-                                handleSelectChange={handleSelectChange}
-                                expandedItemIds={expandedItemIds}
-                                FolderIcon={FolderIcon}
-                                ItemIcon={ItemIcon}
+                    <AccordionPrimitive.Root type="multiple" defaultValue={expandedItemIds}>
+                      <AccordionPrimitive.Item value={item.id}>
+                        <AccordionTrigger
+                          className={cn(
+                            "px-2 hover:before:opacity-100 before:absolute before:left-0 before:w-full before:opacity-0 before:bg-muted/80 before:h-[2rem] before:-z-10",
+                            // selectedItemId === item.id &&
+                            //   "before:opacity-100 before:bg-accent text-accent-foreground before:border-l-2 before:border-l-accent-foreground/50 dark:before:border-0",
+                          )}
+                          onClick={() => handleSelectChange(item)}
+                        >
+                          {item.icon && <item.icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
+                          {!item.icon && FolderIcon && <FolderIcon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/75" aria-hidden="true" />}
+                          <span className="text-sm truncate mr-7">{item.name}</span>
+                          <div className="absolute right-10">
+                            <div className="flex">
+                              <FilePlus2
+                                className="opacity-30 hover:opacity-100 mr-2"
+                                data-tooltip-id="create-note-tooltip"
+                                size={20}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  dispatch(setCreateNoteDialogNotebookId(item.id));
+                                  dispatch(setDialog({ open: true, dialogType: "create-note" }));
+                                }}
                               />
-                            </AccordionContent>
-                          </AccordionPrimitive.Item>
-                        </AccordionPrimitive.Root>
-                      </ContextMenuTrigger>
-                      <ContextMenuContent className="w-64">
-                        <div className="flex align-middle">
-                          <ContextMenuItem inset className="w-full">
-                            Delete
-                          </ContextMenuItem>
-                        </div>
-                      </ContextMenuContent>
-                    </ContextMenu>
+                              <Trash2
+                                className="opacity-30 hover:opacity-100"
+                                data-tooltip-id="delete-notebook-tooltip"
+                                size={20}
+                                onClick={(e) =>
+                                  startTransition(() => {
+                                    e.preventDefault();
+                                    deleteNotebookServerAction(item.name);
+                                  })
+                                }
+                              />
+                              <Tooltip id="create-note-tooltip" content="Create Note" />
+                              <Tooltip id="delete-notebook-tooltip" content="Delete Notebook" />
+                            </div>
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="pl-6">
+                          <TreeItem
+                            data={item.children ? item.children : item}
+                            selectedItemId={selectedItemId}
+                            handleSelectChange={handleSelectChange}
+                            expandedItemIds={expandedItemIds}
+                            FolderIcon={FolderIcon}
+                            ItemIcon={ItemIcon}
+                          />
+                        </AccordionContent>
+                      </AccordionPrimitive.Item>
+                    </AccordionPrimitive.Root>
                   ) : (
                     <Leaf item={item} isSelected={selectedItemId === item.id} onClick={() => handleSelectChange(item)} Icon={ItemIcon} />
                   )}
@@ -218,12 +204,12 @@ const Leaf = React.forwardRef<
         hover:before:opacity-100 before:absolute before:left-0 before:right-1 before:w-full before:opacity-0 before:bg-muted/80 before:h-[1.75rem] before:-z-10",
         className,
         isSelected &&
-          "before:opacity-100 before:bg-accent text-accent-foreground before:border-l-2 before:border-l-accent-foreground/50 dark:before:border-0",
+          "before:opacity-100 before:bg-accent text-accent-foreground before:border-l-2 before:border-l-accent-foreground/80 dark:before:border-0",
       )}
       {...props}
     >
-      {item?.icon && <item.icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
-      {!item?.icon && Icon && <Icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/50" aria-hidden="true" />}
+      {item?.icon && <item.icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/80" aria-hidden="true" />}
+      {!item?.icon && Icon && <Icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/80" aria-hidden="true" />}
       <span className="flex-grow text-sm truncate">{item?.name}</span>
     </div>
   );

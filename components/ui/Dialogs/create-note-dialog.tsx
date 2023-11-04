@@ -6,15 +6,12 @@ import { Button } from "../button";
 import { AlertCircle, Plus, Terminal } from "lucide-react";
 import { DialogContent, DialogDescription, DialogTitle, Dialog, DialogHeader } from "@/components/ui/dialog";
 import { useDispatch, useSelector } from "react-redux";
-import { selectDialog, setDialog, setIsDialogOpen } from "@/app/Redux/Slices/uiSlice";
+import { selectCreateNoteDialogNotebookId, selectDialog, setDialog, setIsDialogOpen } from "@/app/Redux/Slices/uiSlice";
 import { Alert, AlertDescription, AlertTitle } from "../alert";
 import { createNoteServerAction } from "@/lib/server actions/createNote";
 
-interface DialogProps {
-  notebookId: string | null;
-}
-
-export const CreateNoteDialog: FC<DialogProps> = ({ notebookId }) => {
+export const CreateNoteDialog = () => {
+  const notebookId = useSelector(selectCreateNoteDialogNotebookId);
   const dialog = useSelector(selectDialog);
   const dispatch = useDispatch();
   const ref = useRef<HTMLFormElement>(null);
@@ -36,7 +33,6 @@ export const CreateNoteDialog: FC<DialogProps> = ({ notebookId }) => {
         <form
           ref={ref}
           action={async (formData: FormData) => {
-            console.log(notebookId);
             if (!notebookId) return;
             const noteName = formData.get("noteName");
             if (noteName === "") {
@@ -60,6 +56,7 @@ export const CreateNoteDialog: FC<DialogProps> = ({ notebookId }) => {
               }
               return;
             }
+            dispatch(setDialog({ open: false, dialogType: "create-note" }));
           }}
           className="flex w-full items-center space-x-2"
         >

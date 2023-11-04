@@ -3,9 +3,10 @@ import { RootState } from "../store";
 import { cellSlice } from "./cellSlice";
 import { createSelector } from "@reduxjs/toolkit";
 
-type DialogType = "create-notebook" | "create-note" | null
+type DialogType = "create-notebook" | "create-note" | null;
 
 export interface UiState {
+  createNoteDialogNotebookId: string | null;
   isDialogOpen: boolean;
   cursorInsideCodeEditor: {
     [key: string]: boolean;
@@ -14,9 +15,9 @@ export interface UiState {
     [key: string]: number;
   };
   dialog: {
-    open: boolean,
-    dialogType: DialogType
-  }
+    open: boolean;
+    dialogType: DialogType;
+  };
 }
 
 const initialState: UiState = {
@@ -25,8 +26,9 @@ const initialState: UiState = {
   isDialogOpen: false,
   dialog: {
     open: false,
-    dialogType: null
-  }
+    dialogType: null,
+  },
+  createNoteDialogNotebookId: null,
 };
 
 export const uiSlice = createSlice({
@@ -35,6 +37,9 @@ export const uiSlice = createSlice({
   reducers: {
     setIsDialogOpen: (state, action) => {
       state.isDialogOpen = action.payload;
+    },
+    setCreateNoteDialogNotebookId: (state, action) => {
+      state.createNoteDialogNotebookId = action.payload;
     },
     setCursorInsideCodeEditor: (
       state,
@@ -52,9 +57,9 @@ export const uiSlice = createSlice({
     ) => {
       state.codeCellWidth[action.payload.id] = action.payload.width;
     },
-    setDialog: (state, action: {payload: {open: boolean, dialogType: DialogType}}) => {
-      state.dialog = action.payload
-    }
+    setDialog: (state, action: { payload: { open: boolean; dialogType: DialogType } }) => {
+      state.dialog = action.payload;
+    },
   },
   extraReducers(builder) {
     builder.addCase(cellSlice.actions.insertCellAfter, (state, action) => {
@@ -71,7 +76,7 @@ export const uiSlice = createSlice({
   },
 });
 
-export const { setCursorInsideCodeEditor, setCodeCellWidth, setIsDialogOpen, setDialog } = uiSlice.actions;
+export const { setCursorInsideCodeEditor, setCodeCellWidth, setIsDialogOpen, setDialog, setCreateNoteDialogNotebookId } = uiSlice.actions;
 
 export default uiSlice.reducer;
 export const selectCursorInsideCodeEditor = createSelector(
@@ -87,3 +92,4 @@ export const selectAnyCursorInsideCodeEditor = (state: RootState) => {
 };
 export const selectCodeCellWidth = (cellId) => (state: RootState) => state.ui.codeCellWidth[cellId];
 export const selectDialog = (state: RootState) => state.ui.dialog;
+export const selectCreateNoteDialogNotebookId = (state: RootState) => state.ui.createNoteDialogNotebookId;
