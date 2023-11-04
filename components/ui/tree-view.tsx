@@ -69,7 +69,6 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
       walkTreeItems(data, initialSlelectedItemId);
       return ids;
     }, [data, initialSlelectedItemId, expandAll]);
-    console.log(expandedItemIds);
 
     const { ref: refRoot, width, height } = useResizeObserver();
 
