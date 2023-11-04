@@ -7,7 +7,7 @@ export const NotebookTree = async () => {
   const { data: notebooks, error } = await fetchSavedNotebooks(session?.user?.email);
   const treeData = notebooks?.map((notebook) => {
     return {
-      id: notebook.name,
+      id: notebook.id.toString(),
       name: notebook.name,
       children: [],
     };
