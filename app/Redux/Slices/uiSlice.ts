@@ -3,6 +3,8 @@ import { RootState } from "../store";
 import { cellSlice } from "./cellSlice";
 import { createSelector } from "@reduxjs/toolkit";
 
+type DialogType = "create-notebook" | null
+
 export interface UiState {
   isDialogOpen: boolean;
   cursorInsideCodeEditor: {
@@ -11,12 +13,20 @@ export interface UiState {
   codeCellWidth: {
     [key: string]: number;
   };
+  dialog: {
+    open: boolean,
+    dialogType: DialogType
+  }
 }
 
 const initialState: UiState = {
   cursorInsideCodeEditor: {},
   codeCellWidth: {},
   isDialogOpen: false,
+  dialog: {
+    open: false,
+    dialogType: null
+  }
 };
 
 export const uiSlice = createSlice({
@@ -42,6 +52,9 @@ export const uiSlice = createSlice({
     ) => {
       state.codeCellWidth[action.payload.id] = action.payload.width;
     },
+    setDialog: (state, action: {payload: {open: boolean, dialogType: DialogType}}) => {
+      state.dialog = action.payload
+    }
   },
   extraReducers(builder) {
     builder.addCase(cellSlice.actions.insertCellAfter, (state, action) => {
@@ -58,7 +71,7 @@ export const uiSlice = createSlice({
   },
 });
 
-export const { setCursorInsideCodeEditor, setCodeCellWidth, setIsDialogOpen } = uiSlice.actions;
+export const { setCursorInsideCodeEditor, setCodeCellWidth, setIsDialogOpen, setDialog } = uiSlice.actions;
 
 export default uiSlice.reducer;
 export const selectCursorInsideCodeEditor = createSelector(
@@ -73,3 +86,4 @@ export const selectAnyCursorInsideCodeEditor = (state: RootState) => {
   return Object.values(state.ui.cursorInsideCodeEditor).some((value) => value);
 };
 export const selectCodeCellWidth = (cellId) => (state: RootState) => state.ui.codeCellWidth[cellId];
+export const selectDialogOpen = (state: RootState) => state.ui.dialog.open;

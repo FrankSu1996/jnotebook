@@ -7,8 +7,7 @@ import { Suspense } from "react";
 import { Spinner } from "./spinner";
 import { Input } from "../input";
 import { CreateNotebookButton } from "./create-notebook-tooltip";
-import { DialogContent, DialogDescription, DialogTitle, DialogTrigger, Dialog, DialogHeader } from "@/components/ui/dialog";
-import { CreateNotebookForm } from "./create-notebook-form";
+import { CreateNotebookDialog } from "./create-notebook-dialog";
 
 export async function Sidebar() {
   const session = await getServerSession();
@@ -21,26 +20,21 @@ export async function Sidebar() {
       </CardHeader>
       <CardContent className="h-[75%]">
         {!session && (
-          <Alert className="w-full">
-            <Terminal className="h-4 w-4" />
-            <AlertDescription>You need to be logged in to see your notes.</AlertDescription>
-          </Alert>
+          <div>
+            <Alert className="w-full">
+              <Terminal className="h-4 w-4" />
+              <AlertDescription>
+                You need to be logged in to be able to save and view notes from your cloud storage. You can still import/export notes to your local
+                machine.
+              </AlertDescription>
+            </Alert>
+          </div>
         )}
         {session && (
           <div className="flex w-full items-center space-x-2">
             <Input type="text" placeholder="Search for a note" name="notebookName" />
-            <Dialog>
-              <DialogTrigger>
-                <CreateNotebookButton />
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Create Notebook</DialogTitle>
-                  <DialogDescription>Choose a name for your new notebook</DialogDescription>
-                </DialogHeader>
-                <CreateNotebookForm />
-              </DialogContent>
-            </Dialog>
+            <CreateNotebookButton />
+            <CreateNotebookDialog />
           </div>
         )}
         {session && (
