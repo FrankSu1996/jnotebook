@@ -8,6 +8,7 @@ import { BookOpenText, ChevronRight, Folder, Trash2, type LucideIcon } from "luc
 import useResizeObserver from "use-resize-observer";
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
 import { deleteNotebookServerAction } from "@/lib/server actions/deleteNote";
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@radix-ui/react-tooltip";
 
 interface TreeDataItem {
   id: string;
@@ -127,15 +128,24 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
                             )}
                             <span className="text-sm truncate mr-7">{item.name}</span>
                             <div className="absolute right-10 opacity-30 hover:opacity-100">
-                              <Trash2
-                                size={15}
-                                onClick={(e) =>
-                                  startTransition(() => {
-                                    e.preventDefault();
-                                    deleteNotebookServerAction(item.name);
-                                  })
-                                }
-                              ></Trash2>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Trash2
+                                      size={15}
+                                      onClick={(e) =>
+                                        startTransition(() => {
+                                          e.preventDefault();
+                                          deleteNotebookServerAction(item.name);
+                                        })
+                                      }
+                                    />
+                                  </TooltipTrigger>
+                                  <TooltipContent className="mt-3">
+                                    <p>Delete Notebook</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
                             </div>
                           </AccordionTrigger>
                           <AccordionContent className="pl-6">
@@ -153,7 +163,9 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
                     </ContextMenuTrigger>
                     <ContextMenuContent className="w-64">
                       <div className="flex align-middle">
-                        <ContextMenuItem inset>Delete</ContextMenuItem>
+                        <ContextMenuItem inset className="w-full">
+                          Delete
+                        </ContextMenuItem>
                       </div>
                     </ContextMenuContent>
                   </ContextMenu>
