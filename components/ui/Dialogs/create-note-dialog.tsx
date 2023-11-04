@@ -1,6 +1,6 @@
 "use client";
 import { Input } from "../input";
-import { useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "../button";
 import { AlertCircle, Plus, Terminal } from "lucide-react";
@@ -8,14 +8,18 @@ import { DialogContent, DialogDescription, DialogTitle, Dialog, DialogHeader } f
 import { useDispatch, useSelector } from "react-redux";
 import { selectDialog, setDialog, setIsDialogOpen } from "@/app/Redux/Slices/uiSlice";
 import { Alert, AlertDescription, AlertTitle } from "../alert";
+import { createNoteServerAction } from "@/lib/server actions/createNote";
 
-export const CreateNoteDialog = () => {
+interface DialogProps {
+  notebookId: string | null;
+}
+
+export const CreateNoteDialog: FC<DialogProps> = ({ notebookId }) => {
   const dialog = useSelector(selectDialog);
   const dispatch = useDispatch();
   const ref = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
   const [showAlert, setShowAlert] = useState(false);
-
   return (
     <Dialog
       onOpenChange={(open) => {
@@ -32,9 +36,28 @@ export const CreateNoteDialog = () => {
         <form
           ref={ref}
           action={async (formData: FormData) => {
+            console.log(notebookId);
+            if (!notebookId) return;
             const noteName = formData.get("noteName");
             if (noteName === "") {
               setShowAlert(true);
+              return;
+            }
+            const { error } = await createNoteServerAction(formData, notebookId);
+            if (error) {
+              if (error?.code === "23505")
+                toast({
+                  variant: "destructive",
+                  title: "Error creating notebook",
+                  description: "There is already a saved note named " + noteName,
+                });
+              else {
+                toast({
+                  variant: "destructive",
+                  title: "Error creating Note",
+                  description: "Something went wrong...",
+                });
+              }
               return;
             }
           }}

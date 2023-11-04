@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useTransition } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
@@ -76,7 +76,6 @@ const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
       <div ref={refRoot} className={cn("overflow-hidden", className)}>
         <ScrollArea style={{ width, height }}>
           <div className="relative p-2">
-            <CreateNoteDialog />
             <TreeItem
               data={data}
               ref={ref}
@@ -107,9 +106,11 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
   ({ className, data, selectedItemId, handleSelectChange, expandedItemIds, FolderIcon, ItemIcon, ...props }, ref) => {
     const dispatch = useDispatch();
     const [isPending, startTransition] = useTransition();
+    const [selectedNotebookId, setSelectedNotebookId] = useState<string | null>(null);
 
     return (
       <div ref={ref} role="tree" className={className} {...props}>
+        <CreateNoteDialog notebookId={selectedNotebookId} />
         <ul>
           {data instanceof Array ? (
             data.map((item) => {
@@ -141,6 +142,7 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
                                     size={20}
                                     onClick={(e) => {
                                       e.preventDefault();
+                                      setSelectedNotebookId(item.id);
                                       dispatch(setDialog({ open: true, dialogType: "create-note" }));
                                     }}
                                   />
