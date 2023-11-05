@@ -211,7 +211,8 @@ const Leaf = React.forwardRef<
       {item?.icon && <item.icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/80" aria-hidden="true" />}
       {!item?.icon && Icon && <Icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/80" aria-hidden="true" />}
       <span className="flex-grow text-sm truncate">{item?.name}</span>
-      <OpenInNewWindowIcon width={20} height={20} />
+      <OpenInNewWindowIcon width={20} height={20} className="opacity-30 hover:opacity-100" data-tooltip-id="open-note-tooltip" />
+      <Tooltip id="open-note-tooltip" content="Open Note" />
     </div>
   );
 });
