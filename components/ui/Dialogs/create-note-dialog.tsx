@@ -44,7 +44,7 @@ export const CreateNoteDialog = () => {
               if (error?.code === "23505")
                 toast({
                   variant: "destructive",
-                  title: "Error creating notebook",
+                  title: "Error creating note",
                   description: "There is already a saved note named " + noteName,
                 });
               else {

@@ -12,6 +12,7 @@ import { Tooltip } from "./tooltip";
 import { CreateNoteDialog } from "./Dialogs/create-note-dialog";
 import { useDispatch } from "react-redux";
 import { setCreateNoteDialogNotebookId, setDialog } from "@/app/Redux/Slices/uiSlice";
+import { OpenInNewWindowIcon } from "@radix-ui/react-icons";
 
 interface TreeDataItem {
   id: string;
@@ -31,7 +32,6 @@ type TreeProps = React.HTMLAttributes<HTMLDivElement> & {
 const Tree = React.forwardRef<HTMLDivElement, TreeProps>(
   ({ data, initialSlelectedItemId, onSelectChange, expandAll, itemIcon, className, ...props }, ref) => {
     const [selectedItemId, setSelectedItemId] = React.useState<string | undefined>(initialSlelectedItemId);
-
     const handleSelectChange = React.useCallback(
       (item: TreeDataItem | undefined) => {
         setSelectedItemId(item?.id);
@@ -211,6 +211,7 @@ const Leaf = React.forwardRef<
       {item?.icon && <item.icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/80" aria-hidden="true" />}
       {!item?.icon && Icon && <Icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/80" aria-hidden="true" />}
       <span className="flex-grow text-sm truncate">{item?.name}</span>
+      <OpenInNewWindowIcon width={20} height={20} />
     </div>
   );
 });

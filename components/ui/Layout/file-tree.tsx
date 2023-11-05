@@ -34,5 +34,5 @@ export const NotebookTree = async () => {
         }),
     };
   });
-  return <Tree data={treeData} className="w-full h-full relative z-50" initialSlelectedItemId={treeData[0].id} expandAll={true} />;
+  return <Tree data={treeData} className="w-full h-full relative z-50" initialSlelectedItemId={treeData[0]?.id} expandAll={true} />;
 };
