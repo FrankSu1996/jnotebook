@@ -5,13 +5,13 @@ import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { getServerSession } from "next-auth";
 
-export const deleteNoteServerAction = async (noteId: string) => {
+export const deleteNotebookServerAction = async (notebookName: string) => {
   const session = await getServerSession();
   if (session) {
     const cookieStore = cookies();
     const supabase = createServerComponentClient<Database>({ cookies: () => cookieStore });
-    if (noteId) {
-      await supabase.from("Notes").delete().eq("id", noteId).select("*");
+    if (notebookName) {
+      await supabase.from("Notebooks").delete().eq("name", notebookName).select("*");
       revalidatePath("/");
     }
   }

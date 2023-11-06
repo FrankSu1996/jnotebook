@@ -6,13 +6,24 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { BookOpenText, ChevronRight, Folder, Trash2, type LucideIcon, FilePlus2, FileSignature } from "lucide-react";
 import useResizeObserver from "use-resize-observer";
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
-import { deleteNotebookServerAction } from "@/lib/server actions/deleteNote";
+import { deleteNotebookServerAction } from "@/lib/server actions/deleteNotebook";
 import { Tooltip } from "./tooltip";
 import { CreateNoteDialog } from "./Dialogs/create-note-dialog";
 import { useDispatch } from "react-redux";
 import { setCreateNoteDialogNotebookId, setDialog } from "@/app/Redux/Slices/uiSlice";
 import { OpenInNewWindowIcon } from "@radix-ui/react-icons";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { deleteNoteServerAction } from "@/lib/server actions/deleteNote";
 
 interface TreeDataItem {
   id: string;
@@ -141,19 +152,37 @@ const TreeItem = React.forwardRef<HTMLDivElement, TreeItemProps>(
                                   dispatch(setDialog({ open: true, dialogType: "create-note" }));
                                 }}
                               />
-                              <Trash2
-                                className="opacity-30 hover:opacity-100"
-                                data-tooltip-id="delete-notebook-tooltip"
-                                size={20}
-                                onClick={(e) =>
-                                  startTransition(() => {
-                                    e.preventDefault();
-                                    deleteNotebookServerAction(item.name);
-                                  })
-                                }
-                              />
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <div className="opacity-50 hover:opacity-100">
+                                    <Trash2 className="opacity-50 hover:opacity-100" data-tooltip-id="delete-notebook-tooltip" size={20} />
+                                    <Tooltip id="delete-notebook-tooltip" content="Delete Notebook" />
+                                  </div>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      This action cannot be undone. You will lose the contents of this notebook and all of its notes.
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                    <AlertDialogAction
+                                      onClick={(e) =>
+                                        startTransition(() => {
+                                          e.preventDefault();
+                                          deleteNotebookServerAction(item.name);
+                                        })
+                                      }
+                                    >
+                                      Continue
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+
                               <Tooltip id="create-note-tooltip" content="Create Note" />
-                              <Tooltip id="delete-notebook-tooltip" content="Delete Notebook" />
                             </div>
                           </div>
                         </AccordionTrigger>
@@ -196,6 +225,7 @@ const Leaf = React.forwardRef<
     Icon?: LucideIcon;
   }
 >(({ className, item, isSelected, Icon, ...props }, ref) => {
+  const [isPending, startTransition] = useTransition();
   return (
     <div
       ref={ref}
@@ -212,8 +242,35 @@ const Leaf = React.forwardRef<
       {!item?.icon && Icon && <Icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/80" aria-hidden="true" />}
       <span className="flex-grow text-sm truncate">{item?.name}</span>
       <OpenInNewWindowIcon width={20} height={20} className="opacity-30 hover:opacity-100 mr-2" data-tooltip-id="open-note-tooltip" />
-      <Trash2 className="opacity-30 hover:opacity-100 mr-6" data-tooltip-id="delete-note-tooltip" size={20} />
-      <Tooltip id="delete-note-tooltip" content="Delete Note" />
+
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <div className="opacity-30 hover:opacity-100 mr-6">
+            <Trash2 data-tooltip-id="delete-note-tooltip" size={20} />
+            <Tooltip id="delete-note-tooltip" content="Delete Note" />
+          </div>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>This action cannot be undone. You will lose the contents of this react note forever.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() =>
+                startTransition(() => {
+                  console.log(item?.id);
+                  if (item?.id) deleteNoteServerAction(item.id);
+                })
+              }
+            >
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <Tooltip id="open-note-tooltip" content="Open Note" />
     </div>
   );

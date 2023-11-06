@@ -6,6 +6,7 @@ import { createSelector } from "@reduxjs/toolkit";
 type DialogType = "create-notebook" | "create-note" | null;
 
 export interface UiState {
+  selectedNoteId: string | null;
   createNoteDialogNotebookId: string | null;
   isDialogOpen: boolean;
   cursorInsideCodeEditor: {
@@ -21,6 +22,7 @@ export interface UiState {
 }
 
 const initialState: UiState = {
+  selectedNoteId: null,
   cursorInsideCodeEditor: {},
   codeCellWidth: {},
   isDialogOpen: false,
