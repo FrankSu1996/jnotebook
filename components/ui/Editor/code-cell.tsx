@@ -7,7 +7,7 @@ import React from "react";
 import { Cell, bundleCodeAction, selectBundle, updateCell, useCumulativeCode } from "@/app/Redux/Slices/cellSlice";
 import { useDispatch, useSelector } from "react-redux";
 import dynamic from "next/dynamic";
-import { AppDispatch, RootReduxState } from "@/app/Redux/store";
+import { AppDispatch } from "@/app/Redux/store";
 
 const MemoizedPreview = React.memo(Preview);
 

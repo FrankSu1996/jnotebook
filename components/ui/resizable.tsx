@@ -4,7 +4,7 @@ import { ResizableBox, ResizableBoxProps } from "react-resizable";
 import "@/components/ui/styles/Resizable.css";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCodeCellWidth, setCodeCellWidth } from "@/app/Redux/Slices/uiSlice";
+import { selectCodeCellWidth, setCodeCellWidth } from "@/app/Redux/Slices/cellSlice";
 
 interface ResizableProps {
   direction: "horizontal" | "vertical";

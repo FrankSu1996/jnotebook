@@ -1,7 +1,6 @@
 import { Cell } from "@/app/Redux/Slices/cellSlice";
 
 export interface POSTCellsRequestBody {
-  fileName: string;
-  userEmail: string;
+  fileId: string;
   cells: Cell[];
 }

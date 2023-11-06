@@ -6,14 +6,10 @@ import { createSelector } from "@reduxjs/toolkit";
 type DialogType = "create-notebook" | "create-note" | null;
 
 export interface UiState {
-  selectedNoteId: string | null;
   createNoteDialogNotebookId: string | null;
   isDialogOpen: boolean;
   cursorInsideCodeEditor: {
     [key: string]: boolean;
-  };
-  codeCellWidth: {
-    [key: string]: number;
   };
   dialog: {
     open: boolean;
@@ -22,9 +18,7 @@ export interface UiState {
 }
 
 const initialState: UiState = {
-  selectedNoteId: null,
   cursorInsideCodeEditor: {},
-  codeCellWidth: {},
   isDialogOpen: false,
   dialog: {
     open: false,
@@ -51,14 +45,6 @@ export const uiSlice = createSlice({
     ) => {
       state.cursorInsideCodeEditor[action.payload.id] = action.payload.cursorIsInside;
     },
-    setCodeCellWidth: (
-      state,
-      action: {
-        payload: { id: string; width: number };
-      },
-    ) => {
-      state.codeCellWidth[action.payload.id] = action.payload.width;
-    },
     setDialog: (state, action: { payload: { open: boolean; dialogType: DialogType } }) => {
       state.dialog = action.payload;
     },
@@ -68,17 +54,15 @@ export const uiSlice = createSlice({
       if (action.payload.cellType === "code") {
         const cellId = action.payload.newCellId;
         state.cursorInsideCodeEditor[cellId] = false;
-        state.codeCellWidth[cellId] = 0;
       }
     });
     builder.addCase(cellSlice.actions.deleteCell, (state, action) => {
       delete state.cursorInsideCodeEditor[action.payload];
-      delete state.codeCellWidth[action.payload];
     });
   },
 });
 
-export const { setCursorInsideCodeEditor, setCodeCellWidth, setIsDialogOpen, setDialog, setCreateNoteDialogNotebookId } = uiSlice.actions;
+export const { setCursorInsideCodeEditor, setIsDialogOpen, setDialog, setCreateNoteDialogNotebookId } = uiSlice.actions;
 
 export default uiSlice.reducer;
 export const selectCursorInsideCodeEditor = createSelector(
@@ -92,6 +76,5 @@ export const selectIsAnyDialogOpen = (state: RootState) => state.ui.isDialogOpen
 export const selectAnyCursorInsideCodeEditor = (state: RootState) => {
   return Object.values(state.ui.cursorInsideCodeEditor).some((value) => value);
 };
-export const selectCodeCellWidth = (cellId) => (state: RootState) => state.ui.codeCellWidth[cellId];
 export const selectDialog = (state: RootState) => state.ui.dialog;
 export const selectCreateNoteDialogNotebookId = (state: RootState) => state.ui.createNoteDialogNotebookId;

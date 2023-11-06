@@ -24,6 +24,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { deleteNoteServerAction } from "@/lib/server actions/deleteNote";
+import { loadCellsFromNoteAction } from "@/app/Redux/Slices/cellSlice";
+import { AppDispatch } from "@/app/Redux/store";
 
 interface TreeDataItem {
   id: string;
@@ -226,6 +228,7 @@ const Leaf = React.forwardRef<
   }
 >(({ className, item, isSelected, Icon, ...props }, ref) => {
   const [isPending, startTransition] = useTransition();
+  const dispatch: AppDispatch = useDispatch();
   return (
     <div
       ref={ref}
@@ -241,12 +244,22 @@ const Leaf = React.forwardRef<
       {item?.icon && <item.icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/80" aria-hidden="true" />}
       {!item?.icon && Icon && <Icon className="h-4 w-4 shrink-0 mr-2 text-accent-foreground/80" aria-hidden="true" />}
       <span className="flex-grow text-sm truncate">{item?.name}</span>
-      <OpenInNewWindowIcon width={20} height={20} className="opacity-30 hover:opacity-100 mr-2" data-tooltip-id="open-note-tooltip" />
+      <OpenInNewWindowIcon
+        width={20}
+        height={20}
+        className="opacity-30 hover:opacity-100 mr-2"
+        data-tooltip-id="open-note-tooltip"
+        onClick={() => {
+          if (item?.id) {
+            dispatch(loadCellsFromNoteAction(item.id));
+          }
+        }}
+      />
 
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <div className="opacity-30 hover:opacity-100 mr-6">
-            <Trash2 data-tooltip-id="delete-note-tooltip" size={20} />
+            <Trash2 data-tooltip-id="delete-note-toolti~p" size={20} />
             <Tooltip id="delete-note-tooltip" content="Delete Note" />
           </div>
         </AlertDialogTrigger>
@@ -260,7 +273,6 @@ const Leaf = React.forwardRef<
             <AlertDialogAction
               onClick={() =>
                 startTransition(() => {
-                  console.log(item?.id);
                   if (item?.id) deleteNoteServerAction(item.id);
                 })
               }

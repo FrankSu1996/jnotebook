@@ -1,31 +1,34 @@
 "use client";
 
-import { useSelector } from "react-redux";
-import { selectOrder, selectData } from "@/app/Redux/Slices/cellSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectOrder, selectData, saveCellsToNoteAction, selectSelectedNoteId } from "@/app/Redux/Slices/cellSlice";
 import { CellListItem } from "./cell-list-item";
 import { AddCell } from "../add-cell";
 import { Fragment, useState } from "react";
 import { useEffect } from "react";
 import { selectAnyCursorInsideCodeEditor, selectIsAnyDialogOpen } from "@/app/Redux/Slices/uiSlice";
+import { AppDispatch } from "@/app/Redux/store";
 
 export const CellList: React.FC = () => {
+  const selectedNoteId = useSelector(selectSelectedNoteId);
   const order = useSelector(selectOrder);
   const data = useSelector(selectData);
   const cursorInsideCodeEditor = useSelector(selectAnyCursorInsideCodeEditor);
   const isAnyDialogOpen = useSelector(selectIsAnyDialogOpen);
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     function handleKeyPress(event: KeyboardEvent) {
       if (event.ctrlKey && event.key === "s" && !cursorInsideCodeEditor && !isAnyDialogOpen) {
         event.preventDefault();
-        console.log("saving file");
+        if (selectedNoteId) dispatch(saveCellsToNoteAction(selectedNoteId));
       }
     }
 
     window.addEventListener("keydown", handleKeyPress);
 
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [cursorInsideCodeEditor, isAnyDialogOpen]);
+  }, [cursorInsideCodeEditor, isAnyDialogOpen, dispatch, selectedNoteId]);
 
   const cellList = order?.map((id) => {
     return data[id];

@@ -17,6 +17,7 @@ export interface Cell {
 }
 
 export interface CellState {
+  selectedNoteId: string | null;
   loading: boolean;
   error: string | null;
   order: string[];
@@ -32,14 +33,19 @@ export interface CellState {
         }
       | undefined;
   };
+  codeCellWidth: {
+    [key: string]: number;
+  };
 }
 
 const initialState: CellState = {
+  selectedNoteId: null,
   loading: false,
   error: null,
   order: [],
   data: {},
   bundledCode: {},
+  codeCellWidth: {},
 };
 
 // thunks
@@ -53,21 +59,27 @@ export const bundleCodeAction = createAsyncThunk<{ bundle: any; cellId: string }
     };
   },
 );
-export const saveCellsToFileAction = createAsyncThunk<void, { userEmail: string; fileName: string }, { state: RootState }>(
-  "cells/saveCells",
-  async ({ userEmail, fileName }, { getState }) => {
-    const {
-      cells: { data, order },
-    } = getState();
+export const saveCellsToNoteAction = createAsyncThunk<void, string, { state: RootState }>("cells/saveCells", async (fileId: string, { getState }) => {
+  const {
+    cells: { data, order },
+  } = getState();
 
-    const cells = order.map((id) => data[id]);
-    const body: POSTCellsRequestBody = {
-      cells,
-      fileName,
-      userEmail,
-    };
-    const response = await fetch("/api/cells", { method: "post", body: JSON.stringify(body) });
-    return await response.json();
+  const cells = order.map((id) => data[id]);
+  const body: POSTCellsRequestBody = {
+    cells,
+    fileId,
+  };
+  const response = await fetch("/api/cells", { method: "post", body: JSON.stringify(body) });
+  const { data: supabaseResponse, error } = await response.json();
+});
+
+export const loadCellsFromNoteAction = createAsyncThunk<void, string, { state: RootState }>(
+  "cells/loadCells",
+  async (noteId: string, { dispatch }) => {
+    const response = await fetch(`/api/cells?id=${noteId}`, { method: "get" });
+    const { data: fetchedNote, error } = await response.json();
+    const cells = fetchedNote[0].cells;
+    dispatch(setSelectedNoteId(noteId));
   },
 );
 
@@ -75,6 +87,9 @@ export const cellSlice = createSlice({
   name: "cells",
   initialState,
   reducers: {
+    setSelectedNoteId: (state, action) => {
+      state.selectedNoteId = action.payload;
+    },
     updateCell: (state, action: { payload: { id: string; content: string } }) => {
       const { id, content } = action.payload;
       state.data[id].content = content;
@@ -83,6 +98,7 @@ export const cellSlice = createSlice({
       delete state.data[action.payload];
       // Remove the item from the order array
       state.order = state.order.filter((item) => item !== action.payload);
+      delete state.codeCellWidth[action.payload];
     },
     moveCell: (state, action: { payload: { id: string; direction: Direction } }) => {
       const { direction } = action.payload;
@@ -109,6 +125,16 @@ export const cellSlice = createSlice({
       } else {
         state.order.splice(index + 1, 0, cell.id);
       }
+      const cellId = action.payload.newCellId;
+      state.codeCellWidth[cellId] = 0;
+    },
+    setCodeCellWidth: (
+      state,
+      action: {
+        payload: { id: string; width: number };
+      },
+    ) => {
+      state.codeCellWidth[action.payload.id] = action.payload.width;
     },
   },
   extraReducers: (builder) => {
@@ -129,12 +155,14 @@ export const cellSlice = createSlice({
   },
 });
 
-export const { deleteCell, insertCellAfter, moveCell, updateCell } = cellSlice.actions;
+export const { deleteCell, insertCellAfter, moveCell, updateCell, setCodeCellWidth, setSelectedNoteId } = cellSlice.actions;
 
 export default cellSlice.reducer;
 export const selectData = (state: RootState) => state.cells.data;
 export const selectOrder = (state: RootState) => state.cells.order;
 export const selectBundle = (id) => (state: RootState) => state.cells.bundledCode[id];
+export const selectSelectedNoteId = (state: RootState) => state.cells.selectedNoteId;
+export const selectCodeCellWidth = (cellId) => (state: RootState) => state.cells.codeCellWidth[cellId];
 
 // Memoized selector to get cumulative code up to a given cell.id
 export const useCumulativeCode = (cellId) => {
