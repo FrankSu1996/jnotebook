@@ -33,8 +33,11 @@ export interface CellState {
         }
       | undefined;
   };
-  codeCellWidth: {
-    [key: string]: number;
+  codeCellDimensions: {
+    [key: string]: {
+      width: number;
+      height: number;
+    };
   };
 }
 
@@ -45,7 +48,7 @@ const initialState: CellState = {
   order: [],
   data: {},
   bundledCode: {},
-  codeCellWidth: {},
+  codeCellDimensions: {},
 };
 
 // thunks
@@ -98,7 +101,7 @@ export const cellSlice = createSlice({
       delete state.data[action.payload];
       // Remove the item from the order array
       state.order = state.order.filter((item) => item !== action.payload);
-      delete state.codeCellWidth[action.payload];
+      delete state.codeCellDimensions[action.payload];
     },
     moveCell: (state, action: { payload: { id: string; direction: Direction } }) => {
       const { direction } = action.payload;
@@ -126,7 +129,10 @@ export const cellSlice = createSlice({
         state.order.splice(index + 1, 0, cell.id);
       }
       const cellId = action.payload.newCellId;
-      state.codeCellWidth[cellId] = 0;
+      state.codeCellDimensions[cellId] = {
+        width: 0,
+        height: 0,
+      };
     },
     setCodeCellWidth: (
       state,
@@ -134,7 +140,15 @@ export const cellSlice = createSlice({
         payload: { id: string; width: number };
       },
     ) => {
-      state.codeCellWidth[action.payload.id] = action.payload.width;
+      state.codeCellDimensions[action.payload.id].width = action.payload.width;
+    },
+    setCodeCellHeight: (
+      state,
+      action: {
+        payload: { id: string; height: number };
+      },
+    ) => {
+      state.codeCellDimensions[action.payload.id].height = action.payload.height;
     },
   },
   extraReducers: (builder) => {
@@ -155,14 +169,15 @@ export const cellSlice = createSlice({
   },
 });
 
-export const { deleteCell, insertCellAfter, moveCell, updateCell, setCodeCellWidth, setSelectedNoteId } = cellSlice.actions;
+export const { deleteCell, insertCellAfter, moveCell, updateCell, setCodeCellWidth, setSelectedNoteId, setCodeCellHeight } = cellSlice.actions;
 
 export default cellSlice.reducer;
 export const selectData = (state: RootState) => state.cells.data;
 export const selectOrder = (state: RootState) => state.cells.order;
 export const selectBundle = (id) => (state: RootState) => state.cells.bundledCode[id];
 export const selectSelectedNoteId = (state: RootState) => state.cells.selectedNoteId;
-export const selectCodeCellWidth = (cellId) => (state: RootState) => state.cells.codeCellWidth[cellId];
+export const selectCodeCellWidth = (cellId) => (state: RootState) => state.cells.codeCellDimensions[cellId].width;
+export const selectCodeCellHeight = (cellId) => (state: RootState) => state.cells.codeCellDimensions[cellId].height;
 
 // Memoized selector to get cumulative code up to a given cell.id
 export const useCumulativeCode = (cellId) => {

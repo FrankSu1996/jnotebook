@@ -4,7 +4,7 @@ import { ResizableBox, ResizableBoxProps } from "react-resizable";
 import "@/components/ui/styles/Resizable.css";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCodeCellWidth, setCodeCellWidth } from "@/app/Redux/Slices/cellSlice";
+import { selectCodeCellHeight, selectCodeCellWidth, setCodeCellHeight, setCodeCellWidth } from "@/app/Redux/Slices/cellSlice";
 
 interface ResizableProps {
   direction: "horizontal" | "vertical";
@@ -16,6 +16,7 @@ export const Resizable: React.FC<ResizableProps> = ({ direction, children, cellI
   const [innerHeight, setInnerHeight] = useState(0);
   const [innerWidth, setInnerWidth] = useState(0);
   const width = useSelector(selectCodeCellWidth(cellId));
+  const height = useSelector(selectCodeCellHeight(cellId));
   const dispatch = useDispatch();
 
   let resizableProps: ResizableBoxProps;
@@ -24,28 +25,8 @@ export const Resizable: React.FC<ResizableProps> = ({ direction, children, cellI
     setInnerHeight(window.innerHeight);
     setInnerWidth(window.innerWidth);
     dispatch(setCodeCellWidth({ id: cellId, width: window.innerWidth * 0.425 }));
+    dispatch(setCodeCellHeight({ id: cellId, height: 300 }));
   }, [cellId, dispatch]);
-
-  useEffect(() => {
-    let timer: any;
-    const listener = () => {
-      if (timer) {
-        clearTimeout(timer);
-      }
-
-      timer = setTimeout(() => {
-        setInnerHeight(window.innerHeight);
-        setInnerWidth(window.innerWidth);
-        if (window.innerWidth * 0.5 < width) {
-          dispatch(setCodeCellWidth({ id: cellId, width: window.innerWidth * 0.5 }));
-        }
-      }, 100);
-    };
-
-    window.addEventListener("resize", listener);
-
-    return () => window.removeEventListener("resize", listener);
-  }, [width, cellId, dispatch]);
 
   if (direction === "horizontal") {
     resizableProps = {
@@ -62,11 +43,14 @@ export const Resizable: React.FC<ResizableProps> = ({ direction, children, cellI
     };
   } else {
     resizableProps = {
-      height: 300,
+      height,
       width: Infinity,
       resizeHandles: ["s"],
       minConstraints: [Infinity, 24],
       maxConstraints: [Infinity, innerHeight * 0.9],
+      onResizeStop: (event, data) => {
+        dispatch(setCodeCellHeight({ id: cellId, height: data.size.height }));
+      },
     };
   }
 
