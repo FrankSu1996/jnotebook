@@ -64,10 +64,16 @@ export const bundleCodeAction = createAsyncThunk<{ bundle: any; cellId: string }
 );
 export const saveCellsToNoteAction = createAsyncThunk<void, string, { state: RootState }>("cells/saveCells", async (fileId: string, { getState }) => {
   const {
-    cells: { data, order },
+    cells: { data, order, codeCellDimensions },
   } = getState();
 
-  const cells = order.map((id) => data[id]);
+  const cells = order.map((id) => {
+    return {
+      ...data[id],
+      codeCellHeight: codeCellDimensions[id] ? codeCellDimensions[id].height : null,
+      codeCellWidth: codeCellDimensions[id] ? codeCellDimensions[id].width : null,
+    };
+  });
   const body: POSTCellsRequestBody = {
     cells,
     fileId,
@@ -129,10 +135,11 @@ export const cellSlice = createSlice({
         state.order.splice(index + 1, 0, cell.id);
       }
       const cellId = action.payload.newCellId;
-      state.codeCellDimensions[cellId] = {
-        width: 0,
-        height: 0,
-      };
+      if (action.payload.cellType === "code")
+        state.codeCellDimensions[cellId] = {
+          width: 0,
+          height: 0,
+        };
     },
     setCodeCellWidth: (
       state,
