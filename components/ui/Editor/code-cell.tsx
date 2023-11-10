@@ -4,10 +4,11 @@ import { useState, useEffect, useRef } from "react";
 import { Preview } from "@/components/ui/Editor/preview";
 import { Resizable } from "../resizable";
 import React from "react";
-import { Cell, bundleCodeAction, selectBundle, updateCell, useCumulativeCode } from "@/app/Redux/Slices/cellSlice";
+import { Cell, bundleCodeAction, selectBundle, updateCell } from "@/app/Redux/Slices/cellSlice";
 import { useDispatch, useSelector } from "react-redux";
 import dynamic from "next/dynamic";
 import { AppDispatch } from "@/app/Redux/store";
+import { useCumulativeCode } from "@/lib/hooks/useCumulativeCode";
 
 const MemoizedPreview = React.memo(Preview);
 

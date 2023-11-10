@@ -8,6 +8,9 @@ interface PreviewProps {
 
 const html = `
     <html>
+      <head>
+        <link rel="stylesheet" type="text/css" href="/carbonStyles.css">
+      </head>
       <body>
         <div id="root"></div>
         <script>
