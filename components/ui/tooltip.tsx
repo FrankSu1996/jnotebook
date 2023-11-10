@@ -8,5 +8,5 @@ export const Tooltip = (props) => {
   else {
     appliedTheme = theme === "dark" ? "dark" : "light";
   }
-  return <ReactTooltip {...props} variant={appliedTheme} border={"2px solid hsl(var(--border))"} className="z-50" />;
+  return <ReactTooltip {...props} variant={appliedTheme} border={"2px solid hsl(var(--border))"} className="z-100" />;
 };
