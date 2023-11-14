@@ -80,6 +80,7 @@ export const saveCellsToNoteAction = createAsyncThunk<void, string, { state: Roo
   };
   const response = await fetch("/api/cells", { method: "post", body: JSON.stringify(body) });
   const { data: supabaseResponse, error } = await response.json();
+  console.log(supabaseResponse);
 });
 
 export const loadCellsFromNoteAction = createAsyncThunk<void, string, { state: RootState }>(
